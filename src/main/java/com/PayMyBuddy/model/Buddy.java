@@ -9,24 +9,27 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "utilisateur")
-public class User {
+public class Buddy {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "email")
     private String email;
 
-    @Column(name = "username")
-    private String username;
+    @Column(name = "firstname")
+    private String firstName;
 
-    @Column(name = "surname")
-    private String surname;
+    @Column(name = "lastname")
+    private String lastName;
 
     @Column(name = "password")
     private String password;
 
     @Column(name = "sold")
     private int sold;
+
+    @Column(name = "role")
+    private String role;
 
     public String getEmail() {
 	return email;
@@ -36,20 +39,20 @@ public class User {
 	this.email = email;
     }
 
-    public String getUsername() {
-	return username;
+    public String getFirstName() {
+	return firstName;
     }
 
-    public void setUsername(String username) {
-	this.username = username;
+    public void setFirstName(String firstName) {
+	this.firstName = firstName;
     }
 
-    public String getSurname() {
-	return surname;
+    public String getLastName() {
+	return lastName;
     }
 
-    public void setSurname(String surname) {
-	this.surname = surname;
+    public void setLastName(String lastName) {
+	this.lastName = lastName;
     }
 
     public String getPassword() {
@@ -66,6 +69,14 @@ public class User {
 
     public void setSold(int sold) {
 	this.sold = sold;
+    }
+
+    public String getRole() {
+	return role;
+    }
+
+    public void setRole(String role) {
+	this.role = role;
     }
 
 }
