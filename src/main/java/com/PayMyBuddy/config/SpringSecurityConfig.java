@@ -20,15 +20,19 @@ public class SpringSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
 	return http.authorizeHttpRequests(auth -> {
-	    auth.requestMatchers("/list-users").hasRole("USER");
+	    auth.requestMatchers("/").hasRole("USER");
+	    auth.requestMatchers("/list").hasRole("USER");
 	    auth.anyRequest().authenticated();
 	}).formLogin(form -> {
 	    form.loginPage("/login").permitAll();
 	    form.usernameParameter("email");
 	    form.passwordParameter("password");
-	    form.defaultSuccessUrl("/list");
-	    form.failureUrl("/login?error=true");
+	    form.defaultSuccessUrl("/");
+	    form.failureUrl("/login?error=true").permitAll();
+	}).logout(logout -> {
+	    logout.logoutUrl("/logout");
 	}).build();
     }
 
