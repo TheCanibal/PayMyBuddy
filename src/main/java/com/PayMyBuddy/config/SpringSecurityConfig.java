@@ -24,7 +24,7 @@ public class SpringSecurityConfig {
 	return http.authorizeHttpRequests(auth -> {
 	    auth.requestMatchers("/").hasRole("USER");
 	    auth.requestMatchers("/list").hasRole("USER");
-	    auth.anyRequest().authenticated();
+	    auth.requestMatchers("/resources/**", "/css/**").permitAll().anyRequest().authenticated();
 	}).formLogin(form -> {
 	    form.loginPage("/login").permitAll();
 	    form.usernameParameter("email");
@@ -32,7 +32,9 @@ public class SpringSecurityConfig {
 	    form.defaultSuccessUrl("/");
 	    form.failureUrl("/login?error=true").permitAll();
 	}).logout(logout -> {
-	    logout.logoutUrl("/logout");
+	    logout.logoutUrl("/logout").permitAll();
+	    logout.logoutSuccessUrl("/login?logout").invalidateHttpSession(true).deleteCookies("JSESSIONID");
+
 	}).build();
     }
 
