@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class BuddyController {
 
     @Autowired
-    private BuddyRepository userRepository;
+    private BuddyRepository buddyRepository;
 
     @GetMapping("/")
     public String home() {
@@ -28,7 +28,7 @@ public class BuddyController {
     @GetMapping("/list")
     public ModelAndView getAllUsers() {
 	ModelAndView mav = new ModelAndView("list-users");
-	mav.addObject("users", userRepository.findAll());
+	mav.addObject("users", buddyRepository.findAll());
 	return mav;
     }
 

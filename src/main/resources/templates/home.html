@@ -1,7 +1,26 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../static/css/home.css"
+      th:href="@{/css/home.css}"
+    />
+    <script language="javascript" text="text/javascript">
+      // Ajoutez ce code JavaScript à la fin de votre fichier HTML ou dans une balise script séparée.
+      document
+        .getElementById("addConnectionButton")
+        .addEventListener("click", function () {
+          document.getElementById("myModal").style.display = "block";
+        });
+
+      document
+        .getElementById("closeModal")
+        .addEventListener("click", function () {
+          document.getElementById("myModal").style.display = "none";
+        });
+    </script>
   </head>
   <body>
     <header>
@@ -13,7 +32,7 @@
           <li><a href="#">Profile</a></li>
           <li><a href="#">Contact</a></li>
           <form th:action="@{/logout}" method="post">
-            <a href="">Log off</a>
+            <input class="input-logoff" type="submit" value="Log off" />
           </form>
         </ul>
       </nav>
@@ -28,7 +47,17 @@
       <div class="content-block">
         <div class="text-container">
           <p>Send Money</p>
-          <button class="blue-button">Add Connection</button>
+          <a href="#myModal"
+            ><button class="blue-button">Add Connection</button></a
+          >
+          <div id="myModal" class="modal">
+            <div class="modal-content">
+              <a href="" class="closeModal">&times;</a>
+              <h3>Enter an email</h3>
+              <input type="text" id="emailInput" placeholder="Email address" />
+              <button id="addConnectionButtonModal">Add Connection</button>
+            </div>
+          </div>
         </div>
         <div class="form-container">
           <div class="input-container">

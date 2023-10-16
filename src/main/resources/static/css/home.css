@@ -57,6 +57,21 @@ a:hover {
   color: rgb(31, 74, 167);
 }
 
+.input-logoff {
+  border: none;
+  background: white;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  font-size: 15.5px;
+  cursor: pointer;
+  transition: color 0.3s;
+  text-decoration: none;
+}
+
+.input-logoff:hover {
+  color: rgb(31, 74, 167);
+}
+
 .breadcrumb {
   background: #f0f0f0; /* Fond gris très clair */
   padding: 10px;
@@ -89,6 +104,63 @@ a:hover {
 .text-container p {
   font-size: 24px;
   padding-top: 3%;
+}
+
+.modal {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(77, 77, 77, 0.7);
+  transition: all 0.4s;
+}
+
+.modal:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+.modal-content {
+  border-radius: 4px;
+  position: relative;
+  width: 500px;
+  max-width: 90%;
+  background: white;
+  padding: 1.5em 2em;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.closeModal {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  cursor: pointer;
+  color: grey;
+  text-decoration: none;
+}
+
+#addConnectionButtonModal {
+  background: #0074b1;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+#emailInput {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
 }
 
 .form-container {
