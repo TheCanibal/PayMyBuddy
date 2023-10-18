@@ -24,6 +24,7 @@ public class SpringSecurityConfig {
 	return http.authorizeHttpRequests(auth -> {
 	    auth.requestMatchers("/").hasRole("USER");
 	    auth.requestMatchers("/list").hasRole("USER");
+	    auth.requestMatchers("/addFriend").hasRole("USER");
 	    auth.requestMatchers("/resources/**", "/css/**").permitAll().anyRequest().authenticated();
 	}).formLogin(form -> {
 	    form.loginPage("/login").permitAll();

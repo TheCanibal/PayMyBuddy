@@ -1,15 +1,32 @@
 package com.PayMyBuddy.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "utilisateur")
-public class Buddy {
+public class Buddy implements UserDetails {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +47,18 @@ public class Buddy {
 
     @Column(name = "role")
     private String role;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "ajout_ami", joinColumns = @JoinColumn(name = "email"), inverseJoinColumns = @JoinColumn(name = "email_ami"))
+    private List<Buddy> friends = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "friends", cascade = CascadeType.ALL)
+    private List<Buddy> friendsOf = new ArrayList<>();
+
+    public void addFriend(Buddy buddy) {
+	friends.add(buddy);
+	buddy.getFriendsOf().add(this);
+    }
 
     public String getEmail() {
 	return email;
@@ -77,6 +106,58 @@ public class Buddy {
 
     public void setRole(String role) {
 	this.role = role;
+    }
+
+    public List<Buddy> getFriends() {
+	return friends;
+    }
+
+    public void setFriends(List<Buddy> friends) {
+	this.friends = friends;
+    }
+
+    public List<Buddy> getFriendsOf() {
+	return friendsOf;
+    }
+
+    public void setFriendsOf(List<Buddy> friendsOf) {
+	this.friendsOf = friendsOf;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
+    @Override
+    public String getUsername() {
+
+	return this.getEmail();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+	// TODO Auto-generated method stub
+	return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+	// TODO Auto-generated method stub
+	return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+	// TODO Auto-generated method stub
+	return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+	// TODO Auto-generated method stub
+	return true;
     }
 
 }

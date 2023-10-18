@@ -54,8 +54,21 @@
             <div class="modal-content">
               <a href="" class="closeModal">&times;</a>
               <h3>Enter an email</h3>
-              <input type="text" id="emailInput" placeholder="Email address" />
-              <button id="addConnectionButtonModal">Add Connection</button>
+              <form
+                method="post"
+                th:action="@{/addFriend}"
+                th:object="${email}"
+              >
+                <input
+                  type="text"
+                  id="email"
+                  name="email"
+                  placeholder="Email address"
+                />
+                <button id="addConnectionButtonModal" type="submit">
+                  Add Connection
+                </button>
+              </form>
             </div>
           </div>
         </div>
