@@ -57,12 +57,12 @@
               <form
                 method="post"
                 th:action="@{/addFriend}"
-                th:object="${email}"
+                th:object="${buddy}"
               >
                 <input
                   type="text"
                   id="email"
-                  name="email"
+                  th:field="*{email}"
                   placeholder="Email address"
                 />
                 <button id="addConnectionButtonModal" type="submit">

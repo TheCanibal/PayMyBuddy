@@ -13,16 +13,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.PayMyBuddy.model.Buddy;
-import com.PayMyBuddy.repository.BuddyRepository;
+import com.PayMyBuddy.service.BuddyService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 
 @Controller
 public class BuddyController {
 
     @Autowired
-    private BuddyRepository buddyRepository;
+    private BuddyService buddyService;
 
     @GetMapping("/")
     public ModelAndView home() {
@@ -34,7 +35,7 @@ public class BuddyController {
     @GetMapping("/list")
     public ModelAndView getAllUsers() {
 	ModelAndView mav = new ModelAndView("list-users");
-	mav.addObject("users", buddyRepository.findAll());
+	mav.addObject("users", buddyService.getBuddies());
 	return mav;
     }
 
@@ -53,17 +54,24 @@ public class BuddyController {
     }
 
     @PostMapping("/addFriend")
-    public String addFriend(@ModelAttribute String email) {
+    @Transactional
+    public String addFriend(@ModelAttribute Buddy buddy) {
 
 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	Buddy currentBuddy = new Buddy();
-	Buddy buddyToAdd = buddyRepository.findByEmail(email);
+	Buddy buddyToAdd = buddyService.getBuddyByEmail(buddy.getEmail());
 	if (auth != null && buddyToAdd != null) {
+	    System.out.println(buddyToAdd.getFirstName() + buddyToAdd.getEmail());
 	    SecurityContext ctx = SecurityContextHolder.getContext();
 	    Object principal = ctx.getAuthentication().getPrincipal();
 	    String currentEmail = ((UserDetails) principal).getUsername();
-	    currentBuddy = buddyRepository.findByEmail(currentEmail);
+	    System.out.println(currentEmail);
+	    currentBuddy = buddyService.getBuddyByEmail(currentEmail);
+	    System.out.println(currentBuddy.getFirstName());
 	    currentBuddy.addFriend(buddyToAdd);
+	    currentBuddy.getFriends().forEach(friends -> System.out.println("Ami de Jean : " + friends.getFirstName()));
+	    buddyToAdd.getFriendsOf()
+		    .forEach(friends -> System.out.println("Michel est l'ami de : " + friends.getFirstName()));
 
 	}
 	return "redirect:/";

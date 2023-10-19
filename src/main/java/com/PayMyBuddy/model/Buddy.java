@@ -1,11 +1,7 @@
 package com.PayMyBuddy.model;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -21,13 +17,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "utilisateur")
-public class Buddy implements UserDetails {
-
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
+public class Buddy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "email")
@@ -50,10 +40,10 @@ public class Buddy implements UserDetails {
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "ajout_ami", joinColumns = @JoinColumn(name = "email"), inverseJoinColumns = @JoinColumn(name = "email_ami"))
-    private List<Buddy> friends = new ArrayList<>();
+    private List<Buddy> friends = new ArrayList<Buddy>();
 
     @ManyToMany(mappedBy = "friends", cascade = CascadeType.ALL)
-    private List<Buddy> friendsOf = new ArrayList<>();
+    private List<Buddy> friendsOf = new ArrayList<Buddy>();
 
     public void addFriend(Buddy buddy) {
 	friends.add(buddy);
@@ -123,41 +113,4 @@ public class Buddy implements UserDetails {
     public void setFriendsOf(List<Buddy> friendsOf) {
 	this.friendsOf = friendsOf;
     }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-	// TODO Auto-generated method stub
-	return null;
-    }
-
-    @Override
-    public String getUsername() {
-
-	return this.getEmail();
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-	// TODO Auto-generated method stub
-	return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-	// TODO Auto-generated method stub
-	return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-	// TODO Auto-generated method stub
-	return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-	// TODO Auto-generated method stub
-	return true;
-    }
-
 }
