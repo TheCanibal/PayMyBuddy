@@ -1,5 +1,7 @@
 package com.PayMyBuddy.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +17,7 @@ public class BuddyService {
     @Autowired
     private BuddyRepository buddyRepository;
 
-    public Iterable<Buddy> getBuddies() {
+    public List<Buddy> getBuddies() {
 	return buddyRepository.findAll();
     }
 

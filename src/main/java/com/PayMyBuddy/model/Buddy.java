@@ -46,8 +46,16 @@ public class Buddy {
     private List<Buddy> friendsOf = new ArrayList<Buddy>();
 
     public void addFriend(Buddy buddy) {
-	friends.add(buddy);
-	buddy.getFriendsOf().add(this);
+	try {
+	    if (!(friends.contains(buddy) && friendsOf.contains(this))) {
+		friends.add(buddy);
+		buddy.getFriendsOf().add(this);
+	    } else {
+		throw new IllegalArgumentException("Cette personne est déjà dans votre liste d'ami");
+	    }
+	} catch (IllegalArgumentException iae) {
+
+	}
     }
 
     public String getEmail() {

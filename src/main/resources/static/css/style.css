@@ -77,3 +77,13 @@ button {
 button:hover {
   background-color: #0056b3;
 }
+
+.text-warning {
+  font-weight: bold;
+  color: green;
+}
+
+.text-danger {
+  font-weight: bold;
+  color: red;
+}

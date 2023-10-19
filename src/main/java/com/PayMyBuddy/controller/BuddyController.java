@@ -60,20 +60,19 @@ public class BuddyController {
 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	Buddy currentBuddy = new Buddy();
 	Buddy buddyToAdd = buddyService.getBuddyByEmail(buddy.getEmail());
-	if (auth != null && buddyToAdd != null) {
-	    System.out.println(buddyToAdd.getFirstName() + buddyToAdd.getEmail());
+	if (auth != null) {
 	    SecurityContext ctx = SecurityContextHolder.getContext();
 	    Object principal = ctx.getAuthentication().getPrincipal();
 	    String currentEmail = ((UserDetails) principal).getUsername();
-	    System.out.println(currentEmail);
 	    currentBuddy = buddyService.getBuddyByEmail(currentEmail);
-	    System.out.println(currentBuddy.getFirstName());
-	    currentBuddy.addFriend(buddyToAdd);
-	    currentBuddy.getFriends().forEach(friends -> System.out.println("Ami de Jean : " + friends.getFirstName()));
-	    buddyToAdd.getFriendsOf()
-		    .forEach(friends -> System.out.println("Michel est l'ami de : " + friends.getFirstName()));
-
 	}
-	return "redirect:/";
+	if (buddyToAdd != null && buddyService.getBuddies().contains(buddyToAdd)
+		&& !(currentBuddy.getFriends().contains(buddyToAdd))) {
+	    currentBuddy.addFriend(buddyToAdd);
+	    return "redirect:/";
+	} else {
+	    return "redirect:/?error";
+	}
+
     }
 }

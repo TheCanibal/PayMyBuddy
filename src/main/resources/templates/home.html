@@ -45,6 +45,9 @@
       </div>
 
       <div class="content-block">
+        <div th:if="${param.error}">
+          <p class="text-danger">Already added</p>
+        </div>
         <div class="text-container">
           <p>Send Money</p>
           <a href="#myModal"
@@ -52,13 +55,14 @@
           >
           <div id="myModal" class="modal">
             <div class="modal-content">
-              <a href="" class="closeModal">&times;</a>
-              <h3>Enter an email</h3>
               <form
                 method="post"
                 th:action="@{/addFriend}"
                 th:object="${buddy}"
               >
+                <a href="" class="closeModal">&times;</a>
+                <h3>Enter an email</h3>
+
                 <input
                   type="text"
                   id="email"

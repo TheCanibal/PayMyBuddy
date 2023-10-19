@@ -259,3 +259,15 @@ tr {
 table tbody tr:nth-child(odd) {
   background: #f0f0f0;
 }
+
+.text-warning {
+  font-weight: bold;
+  color: green;
+}
+
+.text-danger {
+  font-weight: bold;
+  color: red;
+  text-align: center;
+  font-size: 24px;
+}
