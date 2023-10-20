@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.PayMyBuddy.model.Buddy;
 import com.PayMyBuddy.model.Transaction;
 import com.PayMyBuddy.service.BuddyService;
+import com.PayMyBuddy.service.TransactionService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,6 +26,9 @@ public class BuddyController {
 
     @Autowired
     private BuddyService buddyService;
+
+    @Autowired
+    private TransactionService transactionService;
 
     @GetMapping("/")
     public ModelAndView home() {
@@ -40,6 +44,7 @@ public class BuddyController {
 	mav.addObject("buddy", new Buddy());
 	mav.addObject("friends", currentBuddy.getFriends());
 	mav.addObject("newTransaction", new Transaction());
+	mav.addObject("transactions", transactionService.getAllTransactions());
 	return mav;
     }
 

@@ -88,6 +88,7 @@
               name="description"
               id="description"
               placeholder="Add Description"
+              class="input-style"
             />
           </div>
           <div class="input-container">
@@ -101,6 +102,7 @@
               th:value="${newTransaction.amount}"
               id="amount"
               name="amount"
+              class="input-style"
             />
           </div>
           <div class="input-container">
@@ -120,30 +122,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Connection 1</td>
-                <td>Transaction 1</td>
-                <td>100€</td>
-              </tr>
-              <tr>
-                <td>Connection 2</td>
-                <td>Transaction 2</td>
-                <td>75€</td>
-              </tr>
-              <tr>
-                <td>Connection 3</td>
-                <td>Transaction 3</td>
-                <td>50€</td>
-              </tr>
-              <tr>
-                <td>Connection 4</td>
-                <td>Transaction 4</td>
-                <td>25€</td>
-              </tr>
-              <tr>
-                <td>Connection 5</td>
-                <td>Transaction 5</td>
-                <td>10€</td>
+              <tr th:each="transaction: ${transactions}">
+                <td
+                  th:text="${transaction.firstName + ' ' + transaction.lastName}"
+                ></td>
+                <td th:text="${transaction.description}"></td>
+                <td th:text="${transaction.amount}"></td>
               </tr>
             </tbody>
           </table>
