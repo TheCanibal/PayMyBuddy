@@ -45,6 +45,9 @@ public class Buddy {
     @ManyToMany(mappedBy = "friends", cascade = CascadeType.ALL)
     private List<Buddy> friendsOf = new ArrayList<Buddy>();
 
+    @ManyToMany(mappedBy = "buddies", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    private List<Transaction> transactions = new ArrayList<Transaction>();
+
     public void addFriend(Buddy buddy) {
 	try {
 	    if (!(friends.contains(buddy) && friendsOf.contains(this))) {
@@ -121,4 +124,13 @@ public class Buddy {
     public void setFriendsOf(List<Buddy> friendsOf) {
 	this.friendsOf = friendsOf;
     }
+
+    public List<Transaction> getTransactions() {
+	return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+	this.transactions = transactions;
+    }
+
 }

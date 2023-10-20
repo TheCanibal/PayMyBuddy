@@ -7,20 +7,6 @@
       href="../static/css/home.css"
       th:href="@{/css/home.css}"
     />
-    <script language="javascript" text="text/javascript">
-      // Ajoutez ce code JavaScript à la fin de votre fichier HTML ou dans une balise script séparée.
-      document
-        .getElementById("addConnectionButton")
-        .addEventListener("click", function () {
-          document.getElementById("myModal").style.display = "block";
-        });
-
-      document
-        .getElementById("closeModal")
-        .addEventListener("click", function () {
-          document.getElementById("myModal").style.display = "none";
-        });
-    </script>
   </head>
   <body>
     <header>
@@ -63,12 +49,7 @@
                 <a href="" class="closeModal">&times;</a>
                 <h3>Enter an email</h3>
 
-                <input
-                  type="text"
-                  id="email"
-                  th:field="*{email}"
-                  placeholder="Email address"
-                />
+                <input type="text" id="email" placeholder="Email address" />
                 <button id="addConnectionButtonModal" type="submit">
                   Add Connection
                 </button>
@@ -77,17 +58,31 @@
           </div>
         </div>
         <div class="form-container">
-          <div class="input-container">
-            <select>
-              <option>Select a Connection</option>
-            </select>
-          </div>
-          <div class="input-container">
-            <input type="number" min="0" value="0" step="1" placeholder="0€" />
-          </div>
-          <div class="input-container">
-            <button class="green-button">Pay</button>
-          </div>
+          <form th:object="${friends}">
+            <div class="input-container">
+              <select>
+                <option>Select a Connection</option>
+                <option
+                  th:each="friend : ${friends}"
+                  th:value="${friend.email}"
+                  th:text="${friend.firstName + ' ' + friend.lastName}"
+                ></option>
+              </select>
+            </div>
+            <div class="input-container">
+              <input
+                type="number"
+                min="0"
+                value="0"
+                step="1"
+                placeholder="0€"
+                th:value="${friend.sold}"
+              />
+            </div>
+            <div class="input-container">
+              <button class="green-button" type="submit">Pay</button>
+            </div>
+          </form>
         </div>
       </div>
       <div class="transactions-block">

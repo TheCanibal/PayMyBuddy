@@ -27,8 +27,17 @@ public class BuddyController {
 
     @GetMapping("/")
     public ModelAndView home() {
+	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	Buddy currentBuddy = new Buddy();
+	if (auth != null) {
+	    SecurityContext ctx = SecurityContextHolder.getContext();
+	    Object principal = ctx.getAuthentication().getPrincipal();
+	    String currentEmail = ((UserDetails) principal).getUsername();
+	    currentBuddy = buddyService.getBuddyByEmail(currentEmail);
+	}
 	ModelAndView mav = new ModelAndView("home");
 	mav.addObject("buddy", new Buddy());
+	mav.addObject("friends", currentBuddy.getFriends());
 	return mav;
     }
 
