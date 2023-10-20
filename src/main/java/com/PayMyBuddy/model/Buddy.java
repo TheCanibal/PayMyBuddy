@@ -61,6 +61,10 @@ public class Buddy {
 	}
     }
 
+    public Buddy() {
+	super();
+    }
+
     public String getEmail() {
 	return email;
     }

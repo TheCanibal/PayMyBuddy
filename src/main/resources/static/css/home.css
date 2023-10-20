@@ -157,6 +157,16 @@ a:hover {
   cursor: pointer;
 }
 
+#addDescriptionButtonModal {
+  background: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
 #email {
   width: 100%;
   padding: 10px;
@@ -196,7 +206,7 @@ select {
 }
 
 /* Style du champ input de type number */
-input[type="number"] {
+input {
   height: 17px;
   padding: 10px;
   border: 2px solid #ccc;

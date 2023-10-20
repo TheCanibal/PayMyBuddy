@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.PayMyBuddy.model.Buddy;
+import com.PayMyBuddy.model.Transaction;
 import com.PayMyBuddy.service.BuddyService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,6 +39,7 @@ public class BuddyController {
 	ModelAndView mav = new ModelAndView("home");
 	mav.addObject("buddy", new Buddy());
 	mav.addObject("friends", currentBuddy.getFriends());
+	mav.addObject("newTransaction", new Transaction());
 	return mav;
     }
 
@@ -82,6 +84,5 @@ public class BuddyController {
 	} else {
 	    return "redirect:/?error";
 	}
-
     }
 }

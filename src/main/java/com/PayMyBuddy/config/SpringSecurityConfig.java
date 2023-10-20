@@ -25,6 +25,7 @@ public class SpringSecurityConfig {
 	    auth.requestMatchers("/").hasRole("USER");
 	    auth.requestMatchers("/list").hasRole("USER");
 	    auth.requestMatchers("/addFriend").hasRole("USER");
+	    auth.requestMatchers("/pay").hasRole("USER");
 	    auth.requestMatchers("/?error").hasRole("USER");
 	    auth.requestMatchers("/resources/**", "/css/**").permitAll().anyRequest().authenticated();
 	}).formLogin(form -> {

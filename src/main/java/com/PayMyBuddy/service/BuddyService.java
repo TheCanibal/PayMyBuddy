@@ -29,4 +29,8 @@ public class BuddyService {
 	return buddyRepository.save(buddy);
     }
 
+    public Buddy updateBuddy(Buddy buddy) {
+	return buddyRepository.save(buddy);
+    }
+
 }

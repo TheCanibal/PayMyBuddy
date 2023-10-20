@@ -22,10 +22,13 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private long id;
 
     @Column(name = "firstname")
     private String firstName;
+
+    @Column(name = "lastname")
+    private String lastName;
 
     @Column(name = "description")
     private String description;
@@ -42,11 +45,15 @@ public class Transaction {
 	buddy.getTransactions().add(this);
     }
 
-    public int getId() {
+    public Transaction() {
+	super();
+    }
+
+    public long getId() {
 	return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
 	this.id = id;
     }
 
@@ -56,6 +63,14 @@ public class Transaction {
 
     public void setFirstName(String firstName) {
 	this.firstName = firstName;
+    }
+
+    public String getLastName() {
+	return lastName;
+    }
+
+    public void setLastName(String lastName) {
+	this.lastName = lastName;
     }
 
     public String getDescription() {
