@@ -16,17 +16,17 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "utilisateur")
+@Table(name = "users")
 public class Buddy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "email")
     private String email;
 
-    @Column(name = "firstname")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "lastname")
+    @Column(name = "last_name")
     private String lastName;
 
     @Column(name = "password")
@@ -39,7 +39,7 @@ public class Buddy {
     private String role;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "ajout_ami", joinColumns = @JoinColumn(name = "email"), inverseJoinColumns = @JoinColumn(name = "email_ami"))
+    @JoinTable(name = "add_friend", joinColumns = @JoinColumn(name = "email"), inverseJoinColumns = @JoinColumn(name = "email_friend"))
     private List<Buddy> friends = new ArrayList<Buddy>();
 
     @ManyToMany(mappedBy = "friends", cascade = CascadeType.ALL)

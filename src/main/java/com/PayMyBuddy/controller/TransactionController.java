@@ -31,7 +31,6 @@ public class TransactionController {
 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	Buddy currentBuddy = new Buddy();
 	Buddy buddyToPay = buddyService.getBuddyByEmail(buddy.getEmail());
-	System.out.println(buddyToPay.getFirstName());
 	int amount = newTransaction.getAmount();
 	if (auth != null) {
 	    SecurityContext ctx = SecurityContextHolder.getContext();
@@ -49,11 +48,9 @@ public class TransactionController {
 	    buddyToPay.setSold(buddyToPay.getSold() + amount);
 	    buddyService.updateBuddy(buddyToPay);
 	    newTransaction.addBuddies(currentBuddy);
-	    System.out.println(newTransaction.getAmount() + "cond");
-	    System.out.println(newTransaction.getDescription() + "cond");
 	    return "redirect:/";
 	} else {
-	    return "redirect:/?error";
+	    return "redirect:/?errorTransaction";
 	}
     }
 }

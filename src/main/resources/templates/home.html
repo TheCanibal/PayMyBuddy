@@ -13,6 +13,10 @@
       <div class="logo">Pay My Buddy</div>
       <nav>
         <ul>
+          <li>
+            Remaining balance :
+            <span th:object="${sold}" th:text="${sold}"></span>
+          </li>
           <li><a href="#">Home</a></li>
           <li><a href="#" class="active">Transfer</a></li>
           <li><a href="#">Profile</a></li>
@@ -31,8 +35,11 @@
       </div>
 
       <div class="content-block">
-        <div th:if="${param.error}">
-          <p class="text-danger">Already added</p>
+        <div th:if="${param.errorAdded}">
+          <p class="text-danger">Already added or mail doesn't exist</p>
+        </div>
+        <div th:if="${param.errorTransaction}">
+          <p class="text-danger">You don't have enough money</p>
         </div>
         <div class="text-container">
           <p>Send Money</p>

@@ -16,18 +16,18 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "transfert")
+@Table(name = "transactions")
 public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id_transaction")
     private long id;
 
-    @Column(name = "firstname")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "lastname")
+    @Column(name = "last_name")
     private String lastName;
 
     @Column(name = "description")
@@ -37,7 +37,7 @@ public class Transaction {
     private int amount;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinTable(name = "user_transfert", joinColumns = @JoinColumn(name = "transfert_id"), inverseJoinColumns = @JoinColumn(name = "email"))
+    @JoinTable(name = "user_transaction", joinColumns = @JoinColumn(name = "id_transaction"), inverseJoinColumns = @JoinColumn(name = "email"))
     private List<Buddy> buddies = new ArrayList<Buddy>();
 
     public void addBuddies(Buddy buddy) {
