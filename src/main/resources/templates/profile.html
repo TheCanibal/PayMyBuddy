@@ -71,7 +71,12 @@
               method="post"
             >
               <p>Add money to bank account :</p>
-              <input type="number" />
+              <input
+                type="number"
+                th:value="${sold.sold}"
+                id="sold"
+                name="sold"
+              />
               <button type="submit" value="Add money">Add money</button>
             </form>
           </div>
