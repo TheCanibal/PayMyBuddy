@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transfer</title>
     <link
       rel="stylesheet"
       type="text/css"
-      href="../static/css/home.css"
-      th:href="@{/css/home.css}"
+      href="../static/css/transfer.css"
+      th:href="@{/css/transfer.css}"
     />
   </head>
   <body>
@@ -18,8 +21,8 @@
             <span th:object="${sold}" th:text="${sold}"></span>
           </li>
           <li><a href="#">Home</a></li>
-          <li><a href="#" class="active">Transfer</a></li>
-          <li><a href="#">Profile</a></li>
+          <li><a href="@{/}" class="active">Transfer</a></li>
+          <li><a th:href="@{profile.html}">Profile</a></li>
           <li><a href="#">Contact</a></li>
           <form th:action="@{/logout}" method="post">
             <input class="input-logoff" type="submit" value="Log off" />

@@ -89,4 +89,28 @@ public class TransactionController {
 	    return "redirect:/?errorTransaction";
 	}
     }
+
+    @PostMapping("/addMoneyBalance")
+    public String addMoneyBalance(@ModelAttribute Buddy sold) {
+	// Obtains the currently authenticated principal, or an authentication request
+	// token
+	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	// Connected user to recover
+	Buddy currentBuddy = new Buddy();
+	// if someone is authenticated, recover the connected user
+	if (auth != null) {
+	    SecurityContext ctx = SecurityContextHolder.getContext();
+	    // Obtains the currently authenticated principal
+	    Object principal = ctx.getAuthentication().getPrincipal();
+	    // Obtains user's email to find it in database
+	    String currentEmail = ((UserDetails) principal).getUsername();
+	    // Load the user with his email
+	    currentBuddy = buddyService.getBuddyByEmail(currentEmail);
+	}
+
+	currentBuddy.setSold(sold.getSold() + currentBuddy.getSold());
+	buddyService.updateBuddy(currentBuddy);
+
+	return "redirect:/profile.html";
+    }
 }

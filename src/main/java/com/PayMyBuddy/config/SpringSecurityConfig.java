@@ -13,6 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+
 public class SpringSecurityConfig {
 
     @Autowired
@@ -23,17 +24,18 @@ public class SpringSecurityConfig {
 
 	return http.authorizeHttpRequests(auth -> {
 	    auth.requestMatchers("/").hasRole("USER");
-	    auth.requestMatchers("/list").hasRole("USER");
 	    auth.requestMatchers("/addFriend").hasRole("USER");
 	    auth.requestMatchers("/pay").hasRole("USER");
 	    auth.requestMatchers("/?errorAdded").hasRole("USER");
 	    auth.requestMatchers("/?errorTransaction").hasRole("USER");
 	    auth.requestMatchers("/registration.html").permitAll();
+	    auth.requestMatchers("/profile.html").permitAll();
 	    auth.requestMatchers("/register").permitAll();
-	    auth.requestMatchers("/resources/**", "/css/**").permitAll();
+	    auth.requestMatchers("/login").permitAll();
+	    auth.requestMatchers("/login?successRegister").permitAll();
+	    auth.requestMatchers("/resources/**", "/css/**").permitAll().anyRequest().authenticated();
 	}).formLogin(form -> {
 	    form.loginPage("/login").permitAll();
-	    form.loginPage("/login?successRegister").permitAll();
 	    form.usernameParameter("email");
 	    form.passwordParameter("password");
 	    form.defaultSuccessUrl("/");

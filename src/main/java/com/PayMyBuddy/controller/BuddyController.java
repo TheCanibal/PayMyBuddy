@@ -5,8 +5,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,8 +15,6 @@ import com.PayMyBuddy.model.Buddy;
 import com.PayMyBuddy.model.Transaction;
 import com.PayMyBuddy.service.BuddyService;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 
 @Controller
@@ -27,16 +23,13 @@ public class BuddyController {
     @Autowired
     private BuddyService buddyService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     /**
      * Display the home page with some object with ModelAndView
      * 
      * @return home page with some objects added
      */
     @GetMapping("/")
-    public ModelAndView home() {
+    public ModelAndView transfer() {
 	// Obtains the currently authenticated principal, or an authentication request
 	// token
 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -53,7 +46,7 @@ public class BuddyController {
 	    currentBuddy = buddyService.getBuddyByEmail(currentEmail);
 	}
 	// Create a ModelAndView to insert objects in home.html
-	ModelAndView mav = new ModelAndView("home");
+	ModelAndView mav = new ModelAndView("transfer");
 	mav.addObject("buddy", new Buddy());
 	mav.addObject("friends", currentBuddy.getFriends());
 	mav.addObject("newTransaction", new Transaction());
@@ -62,43 +55,27 @@ public class BuddyController {
 	return mav;
     }
 
-    /**
-     * Display the login page
-     * 
-     * @return login.html file to load
-     */
-    @GetMapping("/login")
-    public String login() {
-	return "login";
-    }
-
-    /**
-     * Display the registration page
-     * 
-     * @return registration.html file to load
-     */
-    @GetMapping("/registration.html")
-    public ModelAndView registration() {
-	ModelAndView mav = new ModelAndView("registration.html");
-	Buddy newBuddy = new Buddy();
-	mav.addObject("newBuddy", newBuddy);
-	return mav;
-    }
-
-    /**
-     * Logout method
-     * 
-     * @param request
-     * @param response
-     * @return redirection to the login page with a successfull logout message
-     */
-    @PostMapping("/logout")
-    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+    @GetMapping("/profile.html")
+    public ModelAndView profile() {
+	ModelAndView mav = new ModelAndView("profile.html");
+	// Obtains the currently authenticated principal, or an authentication request
+	// token
 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	// Connected user to recover
+	Buddy currentBuddy = new Buddy();
+	// if someone is authenticated, recover the connected user
 	if (auth != null) {
-	    new SecurityContextLogoutHandler().logout(request, response, auth);
+	    SecurityContext ctx = SecurityContextHolder.getContext();
+	    // Obtains the currently authenticated principal
+	    Object principal = ctx.getAuthentication().getPrincipal();
+	    // Obtains user's email to find it in database
+	    String currentEmail = ((UserDetails) principal).getUsername();
+	    // Load the user with his email
+	    currentBuddy = buddyService.getBuddyByEmail(currentEmail);
 	}
-	return "redirect:/login?logout";
+	mav.addObject("buddy", currentBuddy);
+	mav.addObject("sold", new Buddy());
+	return mav;
     }
 
     /**
@@ -134,17 +111,4 @@ public class BuddyController {
 	}
     }
 
-    @PostMapping("/register")
-    @Transactional
-    public String register(@ModelAttribute Buddy newBuddy) {
-	newBuddy.setRole("USER");
-	newBuddy.setPassword(passwordEncoder.encode(newBuddy.getPassword()));
-	System.out.println(newBuddy.getEmail());
-	System.out.println(newBuddy.getFirstName());
-	System.out.println(newBuddy.getLastName());
-	System.out.println(newBuddy.getSold());
-	System.out.println(newBuddy.getPassword());
-	buddyService.addBuddy(newBuddy);
-	return "redirect:/login?successRegister";
-    }
 }
