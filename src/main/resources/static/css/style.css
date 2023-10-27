@@ -10,6 +10,7 @@ body {
 
 .login-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -86,4 +87,19 @@ button:hover {
 .text-danger {
   font-weight: bold;
   color: red;
+}
+
+.register-link {
+  padding-top: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+a:hover {
+  color: rgb(31, 74, 167);
 }

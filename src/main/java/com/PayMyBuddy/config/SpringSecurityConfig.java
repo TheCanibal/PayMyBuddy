@@ -28,12 +28,12 @@ public class SpringSecurityConfig {
 	    auth.requestMatchers("/pay").hasRole("USER");
 	    auth.requestMatchers("/?errorAdded").hasRole("USER");
 	    auth.requestMatchers("/?errorTransaction").hasRole("USER");
-	    auth.requestMatchers("/registration").permitAll();
+	    auth.requestMatchers("/registration.html").permitAll();
 	    auth.requestMatchers("/register").permitAll();
-	    auth.requestMatchers("/login?successRegister").permitAll();
 	    auth.requestMatchers("/resources/**", "/css/**").permitAll();
 	}).formLogin(form -> {
 	    form.loginPage("/login").permitAll();
+	    form.loginPage("/login?successRegister").permitAll();
 	    form.usernameParameter("email");
 	    form.passwordParameter("password");
 	    form.defaultSuccessUrl("/");

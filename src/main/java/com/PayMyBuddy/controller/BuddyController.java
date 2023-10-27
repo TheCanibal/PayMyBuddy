@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,9 @@ public class BuddyController {
 
     @Autowired
     private BuddyService buddyService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
      * Display the home page with some object with ModelAndView
@@ -73,9 +77,9 @@ public class BuddyController {
      * 
      * @return registration.html file to load
      */
-    @GetMapping("/registration")
+    @GetMapping("/registration.html")
     public ModelAndView registration() {
-	ModelAndView mav = new ModelAndView("registration");
+	ModelAndView mav = new ModelAndView("registration.html");
 	Buddy newBuddy = new Buddy();
 	mav.addObject("newBuddy", newBuddy);
 	return mav;
@@ -134,12 +138,13 @@ public class BuddyController {
     @Transactional
     public String register(@ModelAttribute Buddy newBuddy) {
 	newBuddy.setRole("USER");
+	newBuddy.setPassword(passwordEncoder.encode(newBuddy.getPassword()));
 	System.out.println(newBuddy.getEmail());
 	System.out.println(newBuddy.getFirstName());
 	System.out.println(newBuddy.getLastName());
 	System.out.println(newBuddy.getSold());
 	System.out.println(newBuddy.getPassword());
 	buddyService.addBuddy(newBuddy);
-	return "redirect:/login";
+	return "redirect:/login?successRegister";
     }
 }
