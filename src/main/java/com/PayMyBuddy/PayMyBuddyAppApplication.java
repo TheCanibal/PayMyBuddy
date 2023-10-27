@@ -29,7 +29,6 @@ public class PayMyBuddyAppApplication implements CommandLineRunner {
 	System.out.println(jean.getFirstName() + " " + gilbert.getFirstName() + " " + michel.getFirstName());
 	bs.getBuddies().forEach(buddy -> System.out.println(buddy.getFirstName()));
 	michel.getFriends().forEach(friends -> System.out.println("Ami de Michel : " + friends.getFirstName()));
-	michel.getFriendsOf().forEach(friends -> System.out.println("Michel est l'ami de : " + friends.getFirstName()));
 
     }
 

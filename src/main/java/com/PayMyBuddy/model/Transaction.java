@@ -34,7 +34,7 @@ public class Transaction {
     private String description;
 
     @Column(name = "amount")
-    private int amount;
+    private double amount;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name = "user_transaction", joinColumns = @JoinColumn(name = "id_transaction"), inverseJoinColumns = @JoinColumn(name = "email"))
@@ -81,11 +81,11 @@ public class Transaction {
 	this.description = description;
     }
 
-    public int getAmount() {
+    public double getAmount() {
 	return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
 	this.amount = amount;
     }
 

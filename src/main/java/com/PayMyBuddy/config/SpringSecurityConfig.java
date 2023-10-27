@@ -28,7 +28,10 @@ public class SpringSecurityConfig {
 	    auth.requestMatchers("/pay").hasRole("USER");
 	    auth.requestMatchers("/?errorAdded").hasRole("USER");
 	    auth.requestMatchers("/?errorTransaction").hasRole("USER");
-	    auth.requestMatchers("/resources/**", "/css/**").permitAll().anyRequest().authenticated();
+	    auth.requestMatchers("/registration").permitAll();
+	    auth.requestMatchers("/register").permitAll();
+	    auth.requestMatchers("/login?successRegister").permitAll();
+	    auth.requestMatchers("/resources/**", "/css/**").permitAll();
 	}).formLogin(form -> {
 	    form.loginPage("/login").permitAll();
 	    form.usernameParameter("email");
@@ -38,7 +41,6 @@ public class SpringSecurityConfig {
 	}).logout(logout -> {
 	    logout.logoutUrl("/logout").permitAll();
 	    logout.logoutSuccessUrl("/login?logout").invalidateHttpSession(true).deleteCookies("JSESSIONID");
-
 	}).build();
     }
 

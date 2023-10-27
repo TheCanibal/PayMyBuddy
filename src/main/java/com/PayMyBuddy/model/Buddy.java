@@ -7,8 +7,6 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -19,7 +17,6 @@ import jakarta.persistence.Table;
 @Table(name = "users")
 public class Buddy {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "email")
     private String email;
 
@@ -33,7 +30,7 @@ public class Buddy {
     private String password;
 
     @Column(name = "sold")
-    private int sold;
+    private double sold;
 
     @Column(name = "role")
     private String role;
@@ -42,17 +39,13 @@ public class Buddy {
     @JoinTable(name = "add_friend", joinColumns = @JoinColumn(name = "email"), inverseJoinColumns = @JoinColumn(name = "email_friend"))
     private List<Buddy> friends = new ArrayList<Buddy>();
 
-    @ManyToMany(mappedBy = "friends", cascade = CascadeType.ALL)
-    private List<Buddy> friendsOf = new ArrayList<Buddy>();
-
     @ManyToMany(mappedBy = "buddies", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<Transaction> transactions = new ArrayList<Transaction>();
 
     public void addFriend(Buddy buddy) {
 	try {
-	    if (!(friends.contains(buddy) && friendsOf.contains(this))) {
+	    if (!(friends.contains(buddy))) {
 		friends.add(buddy);
-		buddy.getFriendsOf().add(this);
 	    } else {
 		throw new IllegalArgumentException("Cette personne est déjà dans votre liste d'ami");
 	    }
@@ -97,11 +90,11 @@ public class Buddy {
 	this.password = password;
     }
 
-    public int getSold() {
+    public double getSold() {
 	return sold;
     }
 
-    public void setSold(int sold) {
+    public void setSold(double sold) {
 	this.sold = sold;
     }
 
@@ -119,14 +112,6 @@ public class Buddy {
 
     public void setFriends(List<Buddy> friends) {
 	this.friends = friends;
-    }
-
-    public List<Buddy> getFriendsOf() {
-	return friendsOf;
-    }
-
-    public void setFriendsOf(List<Buddy> friendsOf) {
-	this.friendsOf = friendsOf;
     }
 
     public List<Transaction> getTransactions() {

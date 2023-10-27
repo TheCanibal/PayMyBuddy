@@ -25,29 +25,65 @@ public class TransactionController {
     @Autowired
     private TransactionService transactionService;
 
+    /**
+     * Execute payment to a friend
+     * 
+     * @param buddy          friend to send money
+     * @param newTransaction create a new transaction to register it and display it
+     * @return redirection to home page or error page
+     */
     @PostMapping("/pay")
     @Transactional
     public String pay(@ModelAttribute Buddy buddy, @ModelAttribute Transaction newTransaction) {
+	// Obtains the currently authenticated principal
 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	// Connected user to recover
 	Buddy currentBuddy = new Buddy();
+	// Friend to pay
 	Buddy buddyToPay = buddyService.getBuddyByEmail(buddy.getEmail());
-	int amount = newTransaction.getAmount();
+	// Amount to transfer with interest
+	double amountInterest = newTransaction.getAmount() * 1.005;
+	System.out.println(amountInterest);
+	// Amount recieved by friend
+	double amount = newTransaction.getAmount();
 	if (auth != null) {
 	    SecurityContext ctx = SecurityContextHolder.getContext();
 	    Object principal = ctx.getAuthentication().getPrincipal();
 	    String currentEmail = ((UserDetails) principal).getUsername();
 	    currentBuddy = buddyService.getBuddyByEmail(currentEmail);
 	}
-	if (buddyToPay != null && buddyService.getBuddies().contains(buddyToPay)
-		&& currentBuddy.getSold() >= newTransaction.getAmount()) {
+	// If friend to pay is not null and is in database and if sold is superior or
+	// equal to transaction amount
+	if (buddyToPay != null && buddyService.getBuddies().contains(buddyToPay) && currentBuddy.getSold() >= amount) {
+	    // set first name and last name to display in transactions
 	    newTransaction.setFirstName(buddyToPay.getFirstName());
 	    newTransaction.setLastName(buddyToPay.getLastName());
+	    // add transaction to database
 	    transactionService.addTransaction(newTransaction);
-	    currentBuddy.setSold(currentBuddy.getSold() - amount);
+	    // Set a negative amount because user lose money
+	    newTransaction.setAmount(-amountInterest);
+	    // update user's sold
+	    currentBuddy.setSold(currentBuddy.getSold() - amountInterest);
+	    // update user in database
 	    buddyService.updateBuddy(currentBuddy);
+	    // update friend's sold
 	    buddyToPay.setSold(buddyToPay.getSold() + amount);
+	    // update friend in database
 	    buddyService.updateBuddy(buddyToPay);
+	    // create a new transaction to allow friend that recieve money to see the
+	    // transaction information
+	    Transaction transactionReverse = new Transaction();
+	    // Set the first name and last name of the user who send money
+	    transactionReverse.setFirstName(currentBuddy.getFirstName());
+	    transactionReverse.setLastName(currentBuddy.getLastName());
+	    // Set amount
+	    transactionReverse.setAmount(amount);
+	    // Set description
+	    transactionReverse.setDescription(newTransaction.getDescription());
+	    // add transactions to the association table
 	    newTransaction.addBuddies(currentBuddy);
+	    transactionReverse.addBuddies(buddyToPay);
+
 	    return "redirect:/";
 	} else {
 	    return "redirect:/?errorTransaction";
