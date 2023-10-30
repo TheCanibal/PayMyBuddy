@@ -42,8 +42,7 @@ public class TransactionController {
 	// Friend to pay
 	Buddy buddyToPay = buddyService.getBuddyByEmail(buddy.getEmail());
 	// Amount to transfer with interest
-	double amountInterest = newTransaction.getAmount() * 1.005;
-	System.out.println(amountInterest);
+	double amountInterestRounded = Math.round(newTransaction.getAmount() * 1.005 * 100.0) / 100.0;
 	// Amount recieved by friend
 	double amount = newTransaction.getAmount();
 	if (auth != null) {
@@ -61,9 +60,9 @@ public class TransactionController {
 	    // add transaction to database
 	    transactionService.addTransaction(newTransaction);
 	    // Set a negative amount because user lose money
-	    newTransaction.setAmount(-amountInterest);
+	    newTransaction.setAmount(-amountInterestRounded);
 	    // update user's sold
-	    currentBuddy.setSold(currentBuddy.getSold() - amountInterest);
+	    currentBuddy.setSold(currentBuddy.getSold() - amountInterestRounded);
 	    // update user in database
 	    buddyService.updateBuddy(currentBuddy);
 	    // update friend's sold
@@ -107,11 +106,14 @@ public class TransactionController {
 	    // Load the user with his email
 	    currentBuddy = buddyService.getBuddyByEmail(currentEmail);
 	}
-
-	currentBuddy.setSold(sold.getSold() + currentBuddy.getSold());
-	buddyService.updateBuddy(currentBuddy);
-
-	return "redirect:/profile.html";
+	double roundSold = Math.round(sold.getSold() * 100.0) / 100.0;
+	if (roundSold > 0 && roundSold <= 1000) {
+	    currentBuddy.setSold(roundSold + currentBuddy.getSold());
+	    buddyService.updateBuddy(currentBuddy);
+	    return "redirect:/profile.html";
+	} else {
+	    return "redirect:/profile.html?errorAmount";
+	}
     }
 
     @PostMapping("/addMoneyBank")
@@ -131,10 +133,14 @@ public class TransactionController {
 	    // Load the user with his email
 	    currentBuddy = buddyService.getBuddyByEmail(currentEmail);
 	}
-
-	currentBuddy.setSold(currentBuddy.getSold() - sold.getSold());
-	buddyService.updateBuddy(currentBuddy);
-
-	return "redirect:/profile.html";
+	// Round sold to 2 decimals
+	double roundSold = Math.round(sold.getSold() * 100.0) / 100.0;
+	if (currentBuddy.getSold() - roundSold > 0 && roundSold > 0 && roundSold <= 1000) {
+	    currentBuddy.setSold(currentBuddy.getSold() - roundSold);
+	    buddyService.updateBuddy(currentBuddy);
+	    return "redirect:/profile.html";
+	} else {
+	    return "redirect:/profile.html?errorAmount";
+	}
     }
 }

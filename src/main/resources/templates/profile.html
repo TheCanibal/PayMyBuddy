@@ -31,7 +31,11 @@
         <span class="blue-text">/</span>
         <a href="#">Profile</a>
       </div>
+
       <div class="profile-container">
+        <div class="error-message" th:if="${param.errorAmount}">
+          <p class="text-danger">Amount incorrect or not enough sold</p>
+        </div>
         <div class="profile-box">
           <div class="logo-container">
             <h2>Profile</h2>
@@ -57,6 +61,9 @@
               <p>Add money to balance :</p>
               <input
                 type="number"
+                min="0"
+                max="1000"
+                step="0.01"
                 th:value="${sold.sold}"
                 id="sold"
                 name="sold"
@@ -73,6 +80,9 @@
               <p>Add money to bank account :</p>
               <input
                 type="number"
+                min="0"
+                max="1000"
+                step="0.01"
                 th:value="${sold.sold}"
                 id="sold"
                 name="sold"

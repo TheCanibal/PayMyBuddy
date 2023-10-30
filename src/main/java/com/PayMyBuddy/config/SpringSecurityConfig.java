@@ -30,6 +30,7 @@ public class SpringSecurityConfig {
 	    auth.requestMatchers("/?errorTransaction").hasRole("USER");
 	    auth.requestMatchers("/registration.html").permitAll();
 	    auth.requestMatchers("/profile.html").permitAll();
+	    auth.requestMatchers("/profile.html?errorAmount").permitAll();
 	    auth.requestMatchers("/register").permitAll();
 	    auth.requestMatchers("/login").permitAll();
 	    auth.requestMatchers("/login?successRegister").permitAll();
@@ -40,9 +41,14 @@ public class SpringSecurityConfig {
 	    form.passwordParameter("password");
 	    form.defaultSuccessUrl("/");
 	    form.failureUrl("/login?error=true").permitAll();
+	}).rememberMe(remember -> {
+	    remember.userDetailsService(this.customUserDetailsService);
+	    remember.key("okontestmercibeaucoup");
+	    remember.rememberMeParameter("remember-me");
 	}).logout(logout -> {
 	    logout.logoutUrl("/logout").permitAll();
-	    logout.logoutSuccessUrl("/login?logout").invalidateHttpSession(true).deleteCookies("JSESSIONID");
+	    logout.logoutSuccessUrl("/login?logout").invalidateHttpSession(true).deleteCookies("JSESSIONID",
+		    "remember-me");
 	}).build();
     }
 
