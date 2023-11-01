@@ -1,10 +1,6 @@
 package com.PayMyBuddy.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,25 +31,18 @@ public class TransactionController {
     @PostMapping("/pay")
     @Transactional
     public String pay(@ModelAttribute Buddy buddy, @ModelAttribute Transaction newTransaction) {
-	// Obtains the currently authenticated principal
-	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	// Connected user to recover
-	Buddy currentBuddy = new Buddy();
+	Buddy currentBuddy = buddyService.BuddyIsConnected();
 	// Friend to pay
 	Buddy buddyToPay = buddyService.getBuddyByEmail(buddy.getEmail());
 	// Amount to transfer with interest
 	double amountInterestRounded = Math.round(newTransaction.getAmount() * 1.005 * 100.0) / 100.0;
 	// Amount recieved by friend
 	double amount = newTransaction.getAmount();
-	if (auth != null) {
-	    SecurityContext ctx = SecurityContextHolder.getContext();
-	    Object principal = ctx.getAuthentication().getPrincipal();
-	    String currentEmail = ((UserDetails) principal).getUsername();
-	    currentBuddy = buddyService.getBuddyByEmail(currentEmail);
-	}
 	// If friend to pay is not null and is in database and if sold is superior or
 	// equal to transaction amount
-	if (buddyToPay != null && buddyService.getBuddies().contains(buddyToPay) && currentBuddy.getSold() >= amount) {
+	if (currentBuddy != null && buddyToPay != null && buddyService.getBuddies().contains(buddyToPay)
+		&& currentBuddy.getSold() >= amount) {
 	    // set first name and last name to display in transactions
 	    newTransaction.setFirstName(buddyToPay.getFirstName());
 	    newTransaction.setLastName(buddyToPay.getLastName());
@@ -91,23 +80,11 @@ public class TransactionController {
 
     @PostMapping("/addMoneyBalance")
     public String addMoneyBalance(@ModelAttribute Buddy sold) {
-	// Obtains the currently authenticated principal, or an authentication request
-	// token
-	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	// Connected user to recover
-	Buddy currentBuddy = new Buddy();
+	Buddy currentBuddy = buddyService.BuddyIsConnected();
 	// if someone is authenticated, recover the connected user
-	if (auth != null) {
-	    SecurityContext ctx = SecurityContextHolder.getContext();
-	    // Obtains the currently authenticated principal
-	    Object principal = ctx.getAuthentication().getPrincipal();
-	    // Obtains user's email to find it in database
-	    String currentEmail = ((UserDetails) principal).getUsername();
-	    // Load the user with his email
-	    currentBuddy = buddyService.getBuddyByEmail(currentEmail);
-	}
 	double roundSold = Math.round(sold.getSold() * 100.0) / 100.0;
-	if (roundSold > 0 && roundSold <= 1000) {
+	if (roundSold > 0 && roundSold <= 1000 && currentBuddy != null) {
 	    currentBuddy.setSold(roundSold + currentBuddy.getSold());
 	    buddyService.updateBuddy(currentBuddy);
 	    return "redirect:/profile.html";
@@ -118,24 +95,11 @@ public class TransactionController {
 
     @PostMapping("/addMoneyBank")
     public String addMoneyBank(@ModelAttribute Buddy sold) {
-	// Obtains the currently authenticated principal, or an authentication request
-	// token
-	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	// Connected user to recover
-	Buddy currentBuddy = new Buddy();
-	// if someone is authenticated, recover the connected user
-	if (auth != null) {
-	    SecurityContext ctx = SecurityContextHolder.getContext();
-	    // Obtains the currently authenticated principal
-	    Object principal = ctx.getAuthentication().getPrincipal();
-	    // Obtains user's email to find it in database
-	    String currentEmail = ((UserDetails) principal).getUsername();
-	    // Load the user with his email
-	    currentBuddy = buddyService.getBuddyByEmail(currentEmail);
-	}
+	Buddy currentBuddy = buddyService.BuddyIsConnected();
 	// Round sold to 2 decimals
 	double roundSold = Math.round(sold.getSold() * 100.0) / 100.0;
-	if (currentBuddy.getSold() - roundSold > 0 && roundSold > 0 && roundSold <= 1000) {
+	if (currentBuddy != null && currentBuddy.getSold() - roundSold > 0 && roundSold > 0 && roundSold <= 1000) {
 	    currentBuddy.setSold(currentBuddy.getSold() - roundSold);
 	    buddyService.updateBuddy(currentBuddy);
 	    return "redirect:/profile.html";
