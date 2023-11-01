@@ -45,6 +45,8 @@ public class SpringSecurityConfig {
 	    remember.userDetailsService(this.customUserDetailsService);
 	    remember.key("okontestmercibeaucoup");
 	    remember.rememberMeParameter("remember-me");
+	}).csrf(csrf -> {
+	    csrf.disable();
 	}).logout(logout -> {
 	    logout.logoutUrl("/logout").permitAll();
 	    logout.logoutSuccessUrl("/login?logout").invalidateHttpSession(true).deleteCookies("JSESSIONID",

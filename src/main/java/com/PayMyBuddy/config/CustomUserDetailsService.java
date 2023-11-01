@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import com.PayMyBuddy.model.Buddy;
 import com.PayMyBuddy.repository.BuddyRepository;
 
-@Service
+@Service("userDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired

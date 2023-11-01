@@ -1,97 +1,69 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profile</title>
-    <link
-      rel="stylesheet"
-      href="../static/css/profile.css"
-      th:href="@{/css/profile.css}"
-    />
-  </head>
-  <body>
-    <header>
-      <div class="logo">Pay My Buddy</div>
-      <nav>
-        <ul>
-          <li><a href="#">Home</a></li>
-          <li><a th:href="@{/}">Transfer</a></li>
-          <li><a th:href="@{profile.html}" class="active">Profile</a></li>
-          <li><a href="#">Contact</a></li>
-          <form th:action="@{/logout}" method="post">
-            <input class="input-logoff" type="submit" value="Log off" />
-          </form>
-        </ul>
-      </nav>
-    </header>
-    <main>
-      <div class="breadcrumb">
-        <a href="#" class="blue-text">Home</a>
-        <span class="blue-text">/</span>
-        <a href="#">Profile</a>
-      </div>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Profile</title>
+		<link rel="stylesheet" href="../static/css/profile.css" th:href="@{/css/profile.css}" />
+	</head>
+	<body>
+		<header>
+			<div class="logo">Pay My Buddy</div>
+			<nav>
+				<ul>
+					<li><a href="#">Home</a></li>
+					<li><a th:href="@{/}">Transfer</a></li>
+					<li><a th:href="@{profile.html}" class="active">Profile</a></li>
+					<li><a href="#">Contact</a></li>
+					<form th:action="@{/logout}" method="post">
+						<input class="input-logoff" type="submit" value="Log off" />
+					</form>
+				</ul>
+			</nav>
+		</header>
+		<main>
+			<div class="breadcrumb">
+				<a href="#" class="blue-text">Home</a>
+				<span class="blue-text">/</span>
+				<a href="#">Profile</a>
+			</div>
 
-      <div class="profile-container">
-        <div class="error-message" th:if="${param.errorAmount}">
-          <p class="text-danger">Amount incorrect or not enough sold</p>
-        </div>
-        <div class="profile-box">
-          <div class="logo-container">
-            <h2>Profile</h2>
-          </div>
-          <div class="info-group">
-            <p>First Name : <span th:text="${buddy.firstName}"></span></p>
-          </div>
-          <div class="info-group">
-            <p>Last Name : <span th:text="${buddy.lastName}"></span></p>
-          </div>
-          <div class="info-group">
-            <p>Email : <span th:text="${buddy.email}"></span></p>
-          </div>
-          <div class="info-group">
-            <p>Sold : <span th:text="${buddy.sold}"></span></p>
-          </div>
-          <div class="add-money">
-            <form
-              class="add-money-container"
-              th:action="@{/addMoneyBalance}"
-              method="post"
-            >
-              <p>Add money to balance :</p>
-              <input
-                type="number"
-                min="0"
-                max="1000"
-                step="0.01"
-                th:value="${sold.sold}"
-                id="sold"
-                name="sold"
-              />
-              <button type="submit" value="Add money">Add money</button>
-            </form>
-          </div>
-          <div class="add-money">
-            <form
-              class="add-money-container"
-              th:action="@{/addMoneyBank}"
-              method="post"
-            >
-              <p>Add money to bank account :</p>
-              <input
-                type="number"
-                min="0"
-                max="1000"
-                step="0.01"
-                th:value="${sold.sold}"
-                id="sold"
-                name="sold"
-              />
-              <button type="submit" value="Add money">Add money</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </main>
-  </body>
+			<div class="profile-container">
+				<div class="error-message" th:if="${param.errorAmount}">
+					<p class="text-danger">Amount incorrect or not enough sold</p>
+				</div>
+				<div class="profile-box">
+					<div class="logo-container">
+						<h2>Profile</h2>
+					</div>
+					<div class="info-group">
+						<p>First Name : <span th:text="${buddy.firstName}"></span></p>
+					</div>
+					<div class="info-group">
+						<p>Last Name : <span th:text="${buddy.lastName}"></span></p>
+					</div>
+					<div class="info-group">
+						<p>Email : <span th:text="${buddy.email}"></span></p>
+					</div>
+					<div class="info-group">
+						<p>Sold : <span th:text="${buddy.sold}"></span></p>
+					</div>
+					<div class="add-money">
+						<form class="add-money-container" th:action="@{/addMoneyBalance}" method="post">
+							<p>Add money to balance :</p>
+							<input type="number" min="0" max="1000" step="0.01" th:value="${sold.sold}" id="sold" name="sold" />
+							<button type="submit" value="Add money">Add money</button>
+						</form>
+					</div>
+					<div class="add-money">
+						<form class="add-money-container" th:action="@{/addMoneyBank}" method="post">
+							<p>Add money to bank account :</p>
+							<input type="number" min="0" max="1000" step="0.01" th:value="${sold.sold}" id="sold" name="sold" />
+							<button type="submit" value="Add money">Add money</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</main>
+	</body>
 </html>
