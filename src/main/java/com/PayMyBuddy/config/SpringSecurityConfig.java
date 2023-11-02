@@ -29,6 +29,7 @@ public class SpringSecurityConfig {
 	    auth.requestMatchers("/?errorAdded").hasRole("USER");
 	    auth.requestMatchers("/?errorTransaction").hasRole("USER");
 	    auth.requestMatchers("/registration.html").permitAll();
+	    auth.requestMatchers("/registration.html?error**").permitAll();
 	    auth.requestMatchers("/profile.html").permitAll();
 	    auth.requestMatchers("/profile.html?errorAmount").permitAll();
 	    auth.requestMatchers("/register").permitAll();
