@@ -91,7 +91,7 @@
 						</thead>
 						<tbody>
 							<tr th:each="transaction: ${transactions}">
-								<td th:text="${transaction.firstName + ' ' + transaction.lastName}"></td>
+								<td th:text="${transaction.buddyFriend.firstName + ' ' + transaction.buddyFriend.lastName}"></td>
 								<td th:text="${transaction.description}"></td>
 								<td th:text="${transaction.amount}"></td>
 							</tr>

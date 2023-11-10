@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -37,90 +38,111 @@ public class Buddy {
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = &quot;add_friend&quot;, joinColumns = @JoinColumn(name = &quot;email&quot;), inverseJoinColumns = @JoinColumn(name = &quot;email_friend&quot;))
-<span class="fc" id="L40">    private List&lt;Buddy&gt; friends = new ArrayList&lt;Buddy&gt;();</span>
+<span class="fc" id="L41">    private List&lt;Buddy&gt; friends = new ArrayList&lt;Buddy&gt;();</span>
 
-    @ManyToMany(mappedBy = &quot;buddies&quot;, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-<span class="fc" id="L43">    private List&lt;Transaction&gt; transactions = new ArrayList&lt;Transaction&gt;();</span>
+    @OneToMany(mappedBy = &quot;buddy&quot;, cascade = CascadeType.ALL, orphanRemoval = true)
+<span class="fc" id="L44">    List&lt;Transaction&gt; transactionsSend = new ArrayList&lt;&gt;();</span>
+
+    @OneToMany(mappedBy = &quot;buddyFriend&quot;, cascade = CascadeType.ALL, orphanRemoval = true)
+<span class="fc" id="L47">    List&lt;Transaction&gt; transactionsRecieve = new ArrayList&lt;&gt;();</span>
 
     public void addFriend(Buddy buddy) {
 	try {
-<span class="pc bpc" id="L47" title="1 of 2 branches missed.">	    if (!(friends.contains(buddy))) {</span>
-<span class="fc" id="L48">		friends.add(buddy);</span>
-<span class="fc" id="L49">	    } else {</span>
-<span class="nc" id="L50">		throw new IllegalArgumentException(&quot;Cette personne est déjà dans votre liste d'ami&quot;);</span>
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">	    if (!(friends.contains(buddy))) {</span>
+<span class="fc" id="L52">		friends.add(buddy);</span>
+<span class="fc" id="L53">	    } else {</span>
+<span class="nc" id="L54">		throw new IllegalArgumentException(&quot;Cette personne est déjà dans votre liste d'ami&quot;);</span>
 	    }
-<span class="nc" id="L52">	} catch (IllegalArgumentException iae) {</span>
+<span class="nc" id="L56">	} catch (IllegalArgumentException iae) {</span>
 
 	}
-<span class="fc" id="L55">    }</span>
-
-    public Buddy() {
-<span class="fc" id="L58">	super();</span>
 <span class="fc" id="L59">    }</span>
 
+    public void addTransactionSend(Transaction transaction) {
+<span class="fc" id="L62">	transactionsSend.add(transaction);</span>
+<span class="fc" id="L63">	transaction.setBuddy(this);</span>
+<span class="fc" id="L64">    }</span>
+
+    public void addTransactionRecieve(Transaction transaction) {
+<span class="fc" id="L67">	transactionsRecieve.add(transaction);</span>
+<span class="fc" id="L68">	transaction.setBuddy(this);</span>
+<span class="fc" id="L69">    }</span>
+
+    public Buddy() {
+<span class="fc" id="L72">	super();</span>
+<span class="fc" id="L73">    }</span>
+
     public String getEmail() {
-<span class="fc" id="L62">	return email;</span>
+<span class="fc" id="L76">	return email;</span>
     }
 
     public void setEmail(String email) {
-<span class="fc" id="L66">	this.email = email;</span>
-<span class="fc" id="L67">    }</span>
+<span class="fc" id="L80">	this.email = email;</span>
+<span class="fc" id="L81">    }</span>
 
     public String getFirstName() {
-<span class="fc" id="L70">	return firstName;</span>
+<span class="fc" id="L84">	return firstName;</span>
     }
 
     public void setFirstName(String firstName) {
-<span class="fc" id="L74">	this.firstName = firstName;</span>
-<span class="fc" id="L75">    }</span>
+<span class="fc" id="L88">	this.firstName = firstName;</span>
+<span class="fc" id="L89">    }</span>
 
     public String getLastName() {
-<span class="fc" id="L78">	return lastName;</span>
+<span class="fc" id="L92">	return lastName;</span>
     }
 
     public void setLastName(String lastName) {
-<span class="fc" id="L82">	this.lastName = lastName;</span>
-<span class="fc" id="L83">    }</span>
+<span class="fc" id="L96">	this.lastName = lastName;</span>
+<span class="fc" id="L97">    }</span>
 
     public String getPassword() {
-<span class="fc" id="L86">	return password;</span>
+<span class="fc" id="L100">	return password;</span>
     }
 
     public void setPassword(String password) {
-<span class="fc" id="L90">	this.password = password;</span>
-<span class="fc" id="L91">    }</span>
+<span class="fc" id="L104">	this.password = password;</span>
+<span class="fc" id="L105">    }</span>
 
     public double getSold() {
-<span class="fc" id="L94">	return sold;</span>
+<span class="fc" id="L108">	return sold;</span>
     }
 
     public void setSold(double sold) {
-<span class="fc" id="L98">	this.sold = sold;</span>
-<span class="fc" id="L99">    }</span>
+<span class="fc" id="L112">	this.sold = sold;</span>
+<span class="fc" id="L113">    }</span>
 
     public String getRole() {
-<span class="fc" id="L102">	return role;</span>
+<span class="fc" id="L116">	return role;</span>
     }
 
     public void setRole(String role) {
-<span class="fc" id="L106">	this.role = role;</span>
-<span class="fc" id="L107">    }</span>
+<span class="fc" id="L120">	this.role = role;</span>
+<span class="fc" id="L121">    }</span>
 
     public List&lt;Buddy&gt; getFriends() {
-<span class="fc" id="L110">	return friends;</span>
+<span class="fc" id="L124">	return friends;</span>
     }
 
     public void setFriends(List&lt;Buddy&gt; friends) {
-<span class="nc" id="L114">	this.friends = friends;</span>
-<span class="nc" id="L115">    }</span>
+<span class="nc" id="L128">	this.friends = friends;</span>
+<span class="nc" id="L129">    }</span>
 
-    public List&lt;Transaction&gt; getTransactions() {
-<span class="fc" id="L118">	return transactions;</span>
+    public List&lt;Transaction&gt; getTransactionsSend() {
+<span class="fc" id="L132">	return transactionsSend;</span>
     }
 
-    public void setTransactions(List&lt;Transaction&gt; transactions) {
-<span class="nc" id="L122">	this.transactions = transactions;</span>
-<span class="nc" id="L123">    }</span>
+    public void setTransactionsSend(List&lt;Transaction&gt; transactionsSend) {
+<span class="nc" id="L136">	this.transactionsSend = transactionsSend;</span>
+<span class="nc" id="L137">    }</span>
+
+    public List&lt;Transaction&gt; getTransactionsRecieve() {
+<span class="nc" id="L140">	return transactionsRecieve;</span>
+    }
+
+    public void setTransactionsRecieve(List&lt;Transaction&gt; transactionsRecieve) {
+<span class="nc" id="L144">	this.transactionsRecieve = transactionsRecieve;</span>
+<span class="nc" id="L145">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

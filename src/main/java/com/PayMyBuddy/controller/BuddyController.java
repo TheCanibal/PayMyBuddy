@@ -34,7 +34,7 @@ public class BuddyController {
 	    mav.addObject("buddy", new Buddy());
 	    mav.addObject("friends", currentBuddy.getFriends());
 	    mav.addObject("newTransaction", new Transaction());
-	    mav.addObject("transactions", currentBuddy.getTransactions());
+	    mav.addObject("transactions", currentBuddy.getTransactionsSend());
 	    mav.addObject("sold", currentBuddy.getSold());
 	    return mav;
 	} else {

@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -39,8 +40,11 @@ public class Buddy {
     @JoinTable(name = "add_friend", joinColumns = @JoinColumn(name = "email"), inverseJoinColumns = @JoinColumn(name = "email_friend"))
     private List<Buddy> friends = new ArrayList<Buddy>();
 
-    @ManyToMany(mappedBy = "buddies", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    private List<Transaction> transactions = new ArrayList<Transaction>();
+    @OneToMany(mappedBy = "buddy", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Transaction> transactionsSend = new ArrayList<>();
+
+    @OneToMany(mappedBy = "buddyFriend", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Transaction> transactionsRecieve = new ArrayList<>();
 
     public void addFriend(Buddy buddy) {
 	try {
@@ -52,6 +56,16 @@ public class Buddy {
 	} catch (IllegalArgumentException iae) {
 
 	}
+    }
+
+    public void addTransaction(Transaction transaction) {
+	transactionsSend.add(transaction);
+	transaction.setBuddy(this);
+    }
+
+    public void addTransactionFriend(Transaction transaction) {
+	transactionsRecieve.add(transaction);
+	transaction.setBuddy(this);
     }
 
     public Buddy() {
@@ -114,12 +128,20 @@ public class Buddy {
 	this.friends = friends;
     }
 
-    public List<Transaction> getTransactions() {
-	return transactions;
+    public List<Transaction> getTransactionsSend() {
+	return transactionsSend;
     }
 
-    public void setTransactions(List<Transaction> transactions) {
-	this.transactions = transactions;
+    public void setTransactionsSend(List<Transaction> transactionsSend) {
+	this.transactionsSend = transactionsSend;
+    }
+
+    public List<Transaction> getTransactionsRecieve() {
+	return transactionsRecieve;
+    }
+
+    public void setTransactionsRecieve(List<Transaction> transactionsRecieve) {
+	this.transactionsRecieve = transactionsRecieve;
     }
 
 }

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.PayMyBuddy.model.Buddy;
 import com.PayMyBuddy.model.Transaction;
 import com.PayMyBuddy.service.BuddyService;
-import com.PayMyBuddy.service.TransactionService;
 
 import jakarta.transaction.Transactional;
 
@@ -17,9 +16,6 @@ public class TransactionController {
 
     @Autowired
     private BuddyService buddyService;
-
-    @Autowired
-    private TransactionService transactionService;
 
     /**
      * Execute payment to a friend
@@ -36,7 +32,7 @@ public class TransactionController {
 	// Friend to pay
 	Buddy buddyToPay = buddyService.getBuddyByEmail(buddy.getEmail());
 	// Amount to transfer with interest rounded with 2 digits after dot
-	double amountInterestRounded = Math.round(newTransaction.getAmount() * 1.005 * 100.0) / 100.0;
+	double amountInterestRoundedToMinus = -(Math.round(newTransaction.getAmount() * 1.005 * 100.0) / 100.0);
 	// Amount recieved by friend
 	double amount = newTransaction.getAmount();
 	// If friend to pay is not null and is in database and if sold is superior or
@@ -45,15 +41,10 @@ public class TransactionController {
 	if (currentBuddy != null && buddyToPay != null && buddyService.getBuddies().contains(buddyToPay)
 		&& currentBuddy.getSold() >= amount && newTransaction.getDescription() != null
 		&& newTransaction.getAmount() >= 1) {
-	    // set first name and last name to display in transactions
-	    newTransaction.setFirstName(buddyToPay.getFirstName());
-	    newTransaction.setLastName(buddyToPay.getLastName());
 	    // Set a negative amount because user lose money
-	    newTransaction.setAmount(-amountInterestRounded);
-	    // add transaction to database
-	    transactionService.addTransaction(newTransaction);
+	    newTransaction.setAmount(amountInterestRoundedToMinus);
 	    // update user's sold
-	    currentBuddy.setSold(currentBuddy.getSold() - amountInterestRounded);
+	    currentBuddy.setSold(currentBuddy.getSold() + amountInterestRoundedToMinus);
 	    // update user in database
 	    buddyService.updateBuddy(currentBuddy);
 	    // update friend's sold
@@ -63,16 +54,16 @@ public class TransactionController {
 	    // create a new transaction to allow friend that recieve money to see the
 	    // transaction information
 	    Transaction transactionReverse = new Transaction();
-	    // Set the first name and last name of the user who send money
-	    transactionReverse.setFirstName(currentBuddy.getFirstName());
-	    transactionReverse.setLastName(currentBuddy.getLastName());
 	    // Set amount
 	    transactionReverse.setAmount(amount);
 	    // Set description
 	    transactionReverse.setDescription(newTransaction.getDescription());
-	    // add transactions to the association table
-	    newTransaction.addBuddies(currentBuddy);
-	    transactionReverse.addBuddies(buddyToPay);
+	    // Set reciever email
+	    newTransaction.setBuddyFriend(buddyToPay);
+	    transactionReverse.setBuddyFriend(currentBuddy);
+	    // add transactions to the transaction's list
+	    currentBuddy.addTransaction(newTransaction);
+	    buddyToPay.addTransactionFriend(transactionReverse);
 
 	    return "redirect:/?successfullTransaction";
 	} else {

@@ -44,25 +44,38 @@ import jakarta.transaction.Transactional;
     @PostMapping(&quot;/register&quot;)
     @Transactional
     public String register(@ModelAttribute Buddy newBuddy) {
-<span class="fc bfc" id="L47" title="All 2 branches covered.">	if (newBuddy.getEmail() != null) {</span>
-<span class="fc bfc" id="L48" title="All 6 branches covered.">	    if (newBuddy.getEmail().contains(&quot;@&quot;) &amp;&amp; newBuddy.getFirstName() != null &amp;&amp; newBuddy.getLastName() != null</span>
-<span class="fc bfc" id="L49" title="All 2 branches covered.">		    &amp;&amp; newBuddy.getPassword() != null) {</span>
-<span class="fc" id="L50">		newBuddy.setSold(0);</span>
-<span class="fc" id="L51">		newBuddy.setRole(&quot;USER&quot;);</span>
-<span class="fc" id="L52">		newBuddy.setPassword(passwordEncoder.encode(newBuddy.getPassword()));</span>
-<span class="fc" id="L53">		buddyService.addBuddy(newBuddy);</span>
-<span class="fc" id="L54">		return &quot;redirect:/login?successRegister&quot;;</span>
-<span class="fc bfc" id="L55" title="All 2 branches covered.">	    } else if (!(newBuddy.getEmail().contains(&quot;@&quot;))) {</span>
-<span class="fc" id="L56">		return &quot;redirect:/registration.html?errorEmail&quot;;</span>
-<span class="fc bfc" id="L57" title="All 2 branches covered.">	    } else if (newBuddy.getFirstName() == null) {</span>
-<span class="fc" id="L58">		return &quot;redirect:/registration.html?errorFirstName&quot;;</span>
-<span class="fc bfc" id="L59" title="All 2 branches covered.">	    } else if (newBuddy.getLastName() == null) {</span>
-<span class="fc" id="L60">		return &quot;redirect:/registration.html?errorLastName&quot;;</span>
+	// if buddy to register has a valid email
+<span class="fc bfc" id="L48" title="All 2 branches covered.">	if (newBuddy.getEmail() != null) {</span>
+	    // if email contains @ and user has filled first name, last name and password
+	    // field
+<span class="fc bfc" id="L51" title="All 6 branches covered.">	    if (newBuddy.getEmail().contains(&quot;@&quot;) &amp;&amp; newBuddy.getFirstName() != null &amp;&amp; newBuddy.getLastName() != null</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">		    &amp;&amp; newBuddy.getPassword() != null) {</span>
+		// set sold to zero
+<span class="fc" id="L54">		newBuddy.setSold(0);</span>
+		// set role to user
+<span class="fc" id="L56">		newBuddy.setRole(&quot;USER&quot;);</span>
+		// encode password before add to DB
+<span class="fc" id="L58">		newBuddy.setPassword(passwordEncoder.encode(newBuddy.getPassword()));</span>
+		// add new user to database and return login page with successful register
+		// message
+<span class="fc" id="L61">		buddyService.addBuddy(newBuddy);</span>
+<span class="fc" id="L62">		return &quot;redirect:/login?successRegister&quot;;</span>
+		// if email doesn't contain @, return error
+<span class="fc bfc" id="L64" title="All 2 branches covered.">	    } else if (!(newBuddy.getEmail().contains(&quot;@&quot;))) {</span>
+<span class="fc" id="L65">		return &quot;redirect:/registration.html?errorEmail&quot;;</span>
+		// if first name field is empty return error message
+<span class="fc bfc" id="L67" title="All 2 branches covered.">	    } else if (newBuddy.getFirstName() == null) {</span>
+<span class="fc" id="L68">		return &quot;redirect:/registration.html?errorFirstName&quot;;</span>
+		// if last name field is empty return error message
+<span class="fc bfc" id="L70" title="All 2 branches covered.">	    } else if (newBuddy.getLastName() == null) {</span>
+<span class="fc" id="L71">		return &quot;redirect:/registration.html?errorLastName&quot;;</span>
+		// else return error message for password
 	    } else {
-<span class="fc" id="L62">		return &quot;redirect:/registration.html?errorPassword&quot;;</span>
+<span class="fc" id="L74">		return &quot;redirect:/registration.html?errorPassword&quot;;</span>
 	    }
+	    // else return error message for email
 	} else {
-<span class="fc" id="L65">	    return &quot;redirect:/registration.html?errorEmail&quot;;</span>
+<span class="fc" id="L78">	    return &quot;redirect:/registration.html?errorEmail&quot;;</span>
 	}
     }
 }

@@ -13,8 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-
-<span class="fc" id="L17">public class SpringSecurityConfig {</span>
+<span class="fc" id="L16">public class SpringSecurityConfig {</span>
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
@@ -22,18 +21,19 @@ import org.springframework.security.web.SecurityFilterChain;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-<span class="fc" id="L25">	return http.authorizeHttpRequests(auth -&gt; {</span>
-<span class="fc" id="L26">	    auth.requestMatchers(&quot;/&quot;).hasRole(&quot;USER&quot;);</span>
-<span class="fc" id="L27">	    auth.requestMatchers(&quot;/addFriend&quot;).hasRole(&quot;USER&quot;);</span>
-<span class="fc" id="L28">	    auth.requestMatchers(&quot;/pay&quot;).hasRole(&quot;USER&quot;);</span>
-<span class="fc" id="L29">	    auth.requestMatchers(&quot;/?errorAdded&quot;).hasRole(&quot;USER&quot;);</span>
-<span class="fc" id="L30">	    auth.requestMatchers(&quot;/?errorTransaction&quot;).hasRole(&quot;USER&quot;);</span>
-<span class="fc" id="L31">	    auth.requestMatchers(&quot;/registration.html&quot;).permitAll();</span>
-<span class="fc" id="L32">	    auth.requestMatchers(&quot;/registration.html?error**&quot;).permitAll();</span>
-<span class="fc" id="L33">	    auth.requestMatchers(&quot;/profile.html&quot;).permitAll();</span>
-<span class="fc" id="L34">	    auth.requestMatchers(&quot;/profile.html?errorAmount&quot;).permitAll();</span>
-<span class="fc" id="L35">	    auth.requestMatchers(&quot;/register&quot;).permitAll();</span>
-<span class="fc" id="L36">	    auth.requestMatchers(&quot;/login&quot;).permitAll();</span>
+<span class="fc" id="L24">	return http.authorizeHttpRequests(auth -&gt; {</span>
+<span class="fc" id="L25">	    auth.requestMatchers(&quot;/&quot;).hasRole(&quot;USER&quot;);</span>
+<span class="fc" id="L26">	    auth.requestMatchers(&quot;/addFriend&quot;).hasRole(&quot;USER&quot;);</span>
+<span class="fc" id="L27">	    auth.requestMatchers(&quot;/pay&quot;).hasRole(&quot;USER&quot;);</span>
+<span class="fc" id="L28">	    auth.requestMatchers(&quot;/?friendAdded&quot;).hasRole(&quot;USER&quot;);</span>
+<span class="fc" id="L29">	    auth.requestMatchers(&quot;/?addFriendError&quot;).hasRole(&quot;USER&quot;);</span>
+<span class="fc" id="L30">	    auth.requestMatchers(&quot;/?successfullTransaction&quot;).hasRole(&quot;USER&quot;);</span>
+<span class="fc" id="L31">	    auth.requestMatchers(&quot;/?errorTransaction&quot;).hasRole(&quot;USER&quot;);</span>
+<span class="fc" id="L32">	    auth.requestMatchers(&quot;/registration.html&quot;).permitAll();</span>
+<span class="fc" id="L33">	    auth.requestMatchers(&quot;/registration.html?error**&quot;).permitAll();</span>
+<span class="fc" id="L34">	    auth.requestMatchers(&quot;/profile.html&quot;).permitAll();</span>
+<span class="fc" id="L35">	    auth.requestMatchers(&quot;/profile.html?errorAmount&quot;).permitAll();</span>
+<span class="fc" id="L36">	    auth.requestMatchers(&quot;/register&quot;).permitAll();</span>
 <span class="fc" id="L37">	    auth.requestMatchers(&quot;/login?successRegister&quot;).permitAll();</span>
 <span class="fc" id="L38">	    auth.requestMatchers(&quot;/resources/**&quot;, &quot;/css/**&quot;).permitAll().anyRequest().authenticated();</span>
 <span class="fc" id="L39">	}).formLogin(form -&gt; {</span>
@@ -46,28 +46,26 @@ import org.springframework.security.web.SecurityFilterChain;
 <span class="fc" id="L46">	    remember.userDetailsService(this.customUserDetailsService);</span>
 <span class="fc" id="L47">	    remember.key(&quot;okontestmercibeaucoup&quot;);</span>
 <span class="fc" id="L48">	    remember.rememberMeParameter(&quot;remember-me&quot;);</span>
-<span class="fc" id="L49">	}).csrf(csrf -&gt; {</span>
-<span class="fc" id="L50">	    csrf.disable();</span>
-<span class="fc" id="L51">	}).logout(logout -&gt; {</span>
-<span class="fc" id="L52">	    logout.logoutUrl(&quot;/logout&quot;).permitAll();</span>
-<span class="fc" id="L53">	    logout.logoutSuccessUrl(&quot;/login?logout&quot;).invalidateHttpSession(true).deleteCookies(&quot;JSESSIONID&quot;,</span>
-<span class="fc" id="L54">		    &quot;remember-me&quot;);</span>
-<span class="fc" id="L55">	}).build();</span>
+<span class="fc" id="L49">	}).logout(logout -&gt; {</span>
+<span class="fc" id="L50">	    logout.logoutUrl(&quot;/logout&quot;).permitAll();</span>
+<span class="fc" id="L51">	    logout.logoutSuccessUrl(&quot;/login?logout&quot;).invalidateHttpSession(true).deleteCookies(&quot;JSESSIONID&quot;,</span>
+<span class="fc" id="L52">		    &quot;remember-me&quot;);</span>
+<span class="fc" id="L53">	}).build();</span>
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-<span class="fc" id="L60">	return new BCryptPasswordEncoder();</span>
+<span class="fc" id="L58">	return new BCryptPasswordEncoder();</span>
     }
 
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder)
 	    throws Exception {
-<span class="fc" id="L66">	AuthenticationManagerBuilder authenticationManagerBuilder = http</span>
-<span class="fc" id="L67">		.getSharedObject(AuthenticationManagerBuilder.class);</span>
-<span class="fc" id="L68">	authenticationManagerBuilder.userDetailsService(customUserDetailsService)</span>
-<span class="fc" id="L69">		.passwordEncoder(bCryptPasswordEncoder);</span>
-<span class="fc" id="L70">	return authenticationManagerBuilder.build();</span>
+<span class="fc" id="L64">	AuthenticationManagerBuilder authenticationManagerBuilder = http</span>
+<span class="fc" id="L65">		.getSharedObject(AuthenticationManagerBuilder.class);</span>
+<span class="fc" id="L66">	authenticationManagerBuilder.userDetailsService(customUserDetailsService)</span>
+<span class="fc" id="L67">		.passwordEncoder(bCryptPasswordEncoder);</span>
+<span class="fc" id="L68">	return authenticationManagerBuilder.build();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
