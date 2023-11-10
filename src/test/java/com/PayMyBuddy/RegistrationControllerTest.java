@@ -1,6 +1,7 @@
 package com.PayMyBuddy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -39,8 +40,8 @@ public class RegistrationControllerTest {
 	int numberOfUsersInDatabase = buddyService.getBuddies().size();
 
 	mockMvc.perform(post("/register").param("email", "test@mail.fr").param("firstName", "Test")
-		.param("lastName", "Test").param("password", "123456")).andExpect(status().is3xxRedirection())
-		.andExpect(view().name("redirect:/login?successRegister"));
+		.param("lastName", "Test").param("password", "123456").with(csrf()))
+		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/login?successRegister"));
 
 	assertEquals(buddyService.getBuddies().size(), numberOfUsersInDatabase + 1);
     }
@@ -48,9 +49,8 @@ public class RegistrationControllerTest {
     @Test
     public void registerWithoutEmailTest() throws Exception {
 
-	mockMvc.perform(
-		post("/register").param("firstName", "Test").param("lastName", "Test").param("password", "123456"))
-		.andExpect(status().is3xxRedirection())
+	mockMvc.perform(post("/register").param("firstName", "Test").param("lastName", "Test")
+		.param("password", "123456").with(csrf())).andExpect(status().is3xxRedirection())
 		.andExpect(view().name("redirect:/registration.html?errorEmail"));
 
     }
@@ -58,9 +58,8 @@ public class RegistrationControllerTest {
     @Test
     public void registerWithoutFirstNameTest() throws Exception {
 
-	mockMvc.perform(
-		post("/register").param("email", "test@mail.fr").param("lastName", "Test").param("password", "123456"))
-		.andExpect(status().is3xxRedirection())
+	mockMvc.perform(post("/register").param("email", "test@mail.fr").param("lastName", "Test")
+		.param("password", "123456").with(csrf())).andExpect(status().is3xxRedirection())
 		.andExpect(view().name("redirect:/registration.html?errorFirstName"));
 
     }
@@ -68,9 +67,8 @@ public class RegistrationControllerTest {
     @Test
     public void registerWithoutLastNameTest() throws Exception {
 
-	mockMvc.perform(
-		post("/register").param("email", "test@mail.fr").param("firstName", "Test").param("password", "123456"))
-		.andExpect(status().is3xxRedirection())
+	mockMvc.perform(post("/register").param("email", "test@mail.fr").param("firstName", "Test")
+		.param("password", "123456").with(csrf())).andExpect(status().is3xxRedirection())
 		.andExpect(view().name("redirect:/registration.html?errorLastName"));
 
     }
@@ -78,9 +76,8 @@ public class RegistrationControllerTest {
     @Test
     public void registerWithoutPasswordTest() throws Exception {
 
-	mockMvc.perform(
-		post("/register").param("email", "test@mail.fr").param("firstName", "Test").param("lastName", "Test"))
-		.andExpect(status().is3xxRedirection())
+	mockMvc.perform(post("/register").param("email", "test@mail.fr").param("firstName", "Test")
+		.param("lastName", "Test").with(csrf())).andExpect(status().is3xxRedirection())
 		.andExpect(view().name("redirect:/registration.html?errorPassword"));
 
     }
@@ -88,7 +85,8 @@ public class RegistrationControllerTest {
     @Test
     public void registerWithWrongEmail() throws Exception {
 	mockMvc.perform(post("/register").param("email", "testmail.fr").param("firstName", "Test")
-		.param("lastName", "Test").param("password", "123456")).andExpect(status().is3xxRedirection())
+		.param("lastName", "Test").param("password", "123456").with(csrf()))
+		.andExpect(status().is3xxRedirection())
 		.andExpect(view().name("redirect:/registration.html?errorEmail"));
 
     }

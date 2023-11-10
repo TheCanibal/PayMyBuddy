@@ -64,7 +64,7 @@ public class BuddyControllerTest {
 	int numberOfFriends = jeandupont.getFriends().size();
 
 	mockMvc.perform(post("/addFriend").param("email", "gilbertlarousse@mail.fr").with(csrf()))
-		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/"));
+		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/?friendAdded"));
 
 	assertEquals(jeandupont.getFriends().size(), numberOfFriends + 1);
     }
@@ -74,7 +74,7 @@ public class BuddyControllerTest {
     public void addFriendInFriendListWithUnknownUserTest() throws Exception {
 
 	mockMvc.perform(post("/addFriend").param("email", "unknownUser@mail.fr").with(csrf()))
-		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/?errorAdded"));
+		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/?addFriendError"));
     }
 
     @Test
@@ -82,7 +82,7 @@ public class BuddyControllerTest {
     public void addFriendWhoIsAlreadyFriendInFriendListTest() throws Exception {
 
 	mockMvc.perform(post("/addFriend").param("email", "michelmartin@mail.fr").with(csrf()))
-		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/?errorAdded"));
+		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/?addFriendError"));
     }
 
     @Test
@@ -90,7 +90,7 @@ public class BuddyControllerTest {
     public void addNullFriendInFriendListTest() throws Exception {
 
 	mockMvc.perform(post("/addFriend").with(csrf())).andExpect(status().is3xxRedirection())
-		.andExpect(view().name("redirect:/?errorAdded"));
+		.andExpect(view().name("redirect:/?addFriendError"));
     }
 
     @Test
@@ -98,7 +98,7 @@ public class BuddyControllerTest {
     public void addFriendInUnknownUserFriendListTest() throws Exception {
 
 	mockMvc.perform(post("/addFriend").param("email", "gilbertlarousse@mail.fr").with(csrf()))
-		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/?errorAdded"));
+		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/?addFriendError"));
     }
 
     @Test
@@ -106,7 +106,7 @@ public class BuddyControllerTest {
     public void addNullFriendInUnknownUserFriendListTest() throws Exception {
 
 	mockMvc.perform(post("/addFriend").with(csrf())).andExpect(status().is3xxRedirection())
-		.andExpect(view().name("redirect:/?errorAdded"));
+		.andExpect(view().name("redirect:/?addFriendError"));
     }
 
     @Test
@@ -114,7 +114,7 @@ public class BuddyControllerTest {
     public void addUnknownFriendInUnknownUserFriendListTest() throws Exception {
 
 	mockMvc.perform(post("/addFriend").param("email", "unknownUser@mail.fr").with(csrf()))
-		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/?errorAdded"));
+		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/?addFriendError"));
     }
 
 }

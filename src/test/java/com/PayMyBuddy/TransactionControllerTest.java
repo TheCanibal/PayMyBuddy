@@ -1,6 +1,7 @@
 package com.PayMyBuddy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,7 +40,8 @@ public class TransactionControllerTest {
 	assertEquals(michelmartinSold, 1.0);
 
 	mockMvc.perform(post("/pay").param("email", "michelmartin@mail.fr").param("description", "Birthday")
-		.param("amount", "20.0")).andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/"));
+		.param("amount", "20.0").with(csrf())).andExpect(status().is3xxRedirection())
+		.andExpect(redirectedUrl("/?successfullTransaction"));
 
 	assertEquals(jeandupont.getSold(), 29.9);
 	assertEquals(michelmartin.getSold(), 21.0);
@@ -48,21 +50,22 @@ public class TransactionControllerTest {
     @Test
     @WithMockUser(username = "jeandupont@mail.fr")
     public void payWithoutFriendEmailTest() throws Exception {
-	mockMvc.perform(post("/pay").param("description", "Birthday").param("amount", "20.0"))
+	mockMvc.perform(post("/pay").param("description", "Birthday").param("amount", "20.0").with(csrf()))
 		.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/?errorTransaction"));
     }
 
     @Test
     @WithMockUser(username = "jeandupont@mail.fr")
     public void payWithoutDescriptionTest() throws Exception {
-	mockMvc.perform(post("/pay").param("email", "michelmartin@mail.fr").param("amount", "20.0"))
+	mockMvc.perform(post("/pay").param("email", "michelmartin@mail.fr").param("amount", "20.0").with(csrf()))
 		.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/?errorTransaction"));
     }
 
     @Test
     @WithMockUser(username = "jeandupont@mail.fr")
     public void payWithoutAmountTest() throws Exception {
-	mockMvc.perform(post("/pay").param("email", "michelmartin@mail.fr").param("description", "Birthday"))
+	mockMvc.perform(
+		post("/pay").param("email", "michelmartin@mail.fr").param("description", "Birthday").with(csrf()))
 		.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/?errorTransaction"));
     }
 
@@ -70,23 +73,23 @@ public class TransactionControllerTest {
     @WithMockUser(username = "jeandupont@mail.fr")
     public void payWithTooHighAmountTest() throws Exception {
 	mockMvc.perform(post("/pay").param("email", "michelmartin@mail.fr").param("description", "Birthday")
-		.param("amount", "9999999.0")).andExpect(status().is3xxRedirection())
+		.param("amount", "9999999.0").with(csrf())).andExpect(status().is3xxRedirection())
 		.andExpect(redirectedUrl("/?errorTransaction"));
     }
 
     @Test
     @WithMockUser(username = "jeandupont@mail.fr")
     public void payWithWrongFriendEmailTest() throws Exception {
-	mockMvc.perform(
-		post("/pay").param("email", "unknow@mail.fr").param("description", "Birthday").param("amount", "20.0"))
-		.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/?errorTransaction"));
+	mockMvc.perform(post("/pay").param("email", "unknow@mail.fr").param("description", "Birthday")
+		.param("amount", "20.0").with(csrf())).andExpect(status().is3xxRedirection())
+		.andExpect(redirectedUrl("/?errorTransaction"));
     }
 
     @Test
     @WithMockUser
     public void payWithUnknownUserTest() throws Exception {
 	mockMvc.perform(post("/pay").param("email", "michelmartin@mail.fr").param("description", "Birthday")
-		.param("amount", "20.0")).andExpect(status().is3xxRedirection())
+		.param("amount", "20.0").with(csrf())).andExpect(status().is3xxRedirection())
 		.andExpect(redirectedUrl("/?errorTransaction"));
     }
 
@@ -97,8 +100,8 @@ public class TransactionControllerTest {
 	double jeandupontSold = jeandupont.getSold();
 	assertEquals(jeandupontSold, 50.0);
 
-	mockMvc.perform(post("/addMoneyBalance").param("sold", "100.0")).andExpect(status().is3xxRedirection())
-		.andExpect(redirectedUrl("/profile.html"));
+	mockMvc.perform(post("/addMoneyBalance").param("sold", "100.0").with(csrf()))
+		.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/profile.html"));
 
 	assertEquals(jeandupont.getSold(), 150.0);
     }
@@ -107,8 +110,8 @@ public class TransactionControllerTest {
     @WithMockUser(username = "jeandupont@mail.fr")
     public void addMoneyToBalanceBelowZeroTest() throws Exception {
 
-	mockMvc.perform(post("/addMoneyBalance").param("sold", "-50")).andExpect(status().is3xxRedirection())
-		.andExpect(redirectedUrl("/profile.html?errorAmount"));
+	mockMvc.perform(post("/addMoneyBalance").param("sold", "-50").with(csrf()))
+		.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/profile.html?errorAmount"));
 
     }
 
@@ -116,8 +119,8 @@ public class TransactionControllerTest {
     @WithMockUser(username = "jeandupont@mail.fr")
     public void addMoneyToBalanceAboveTwentyThousandTest() throws Exception {
 
-	mockMvc.perform(post("/addMoneyBalance").param("sold", "50000")).andExpect(status().is3xxRedirection())
-		.andExpect(redirectedUrl("/profile.html?errorAmount"));
+	mockMvc.perform(post("/addMoneyBalance").param("sold", "50000").with(csrf()))
+		.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/profile.html?errorAmount"));
 
     }
 
@@ -128,7 +131,7 @@ public class TransactionControllerTest {
 	double jeandupontSold = jeandupont.getSold();
 	assertEquals(jeandupontSold, 50.0);
 
-	mockMvc.perform(post("/addMoneyBank").param("sold", "30.0")).andExpect(status().is3xxRedirection())
+	mockMvc.perform(post("/addMoneyBank").param("sold", "30.0").with(csrf())).andExpect(status().is3xxRedirection())
 		.andExpect(redirectedUrl("/profile.html"));
 
 	assertEquals(jeandupont.getSold(), 20.0);
@@ -138,7 +141,7 @@ public class TransactionControllerTest {
     @WithMockUser(username = "jeandupont@mail.fr")
     public void addTooMuchMoneyToBankTest() throws Exception {
 
-	mockMvc.perform(post("/addMoneyBank").param("sold", "100")).andExpect(status().is3xxRedirection())
+	mockMvc.perform(post("/addMoneyBank").param("sold", "100").with(csrf())).andExpect(status().is3xxRedirection())
 		.andExpect(redirectedUrl("/profile.html?errorAmount"));
     }
 
@@ -146,7 +149,7 @@ public class TransactionControllerTest {
     @WithMockUser(username = "jeandupont@mail.fr")
     public void addMoneyToBankBelowZeroTest() throws Exception {
 
-	mockMvc.perform(post("/addMoneyBank").param("sold", "-50")).andExpect(status().is3xxRedirection())
+	mockMvc.perform(post("/addMoneyBank").param("sold", "-50").with(csrf())).andExpect(status().is3xxRedirection())
 		.andExpect(redirectedUrl("/profile.html?errorAmount"));
 
     }
@@ -155,8 +158,8 @@ public class TransactionControllerTest {
     @WithMockUser(username = "jeandupont@mail.fr")
     public void addMoneyToBankAboveTwentyThousandTest() throws Exception {
 
-	mockMvc.perform(post("/addMoneyBank").param("sold", "50000")).andExpect(status().is3xxRedirection())
-		.andExpect(redirectedUrl("/profile.html?errorAmount"));
+	mockMvc.perform(post("/addMoneyBank").param("sold", "50000").with(csrf()))
+		.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/profile.html?errorAmount"));
 
     }
 
