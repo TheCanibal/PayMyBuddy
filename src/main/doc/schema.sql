@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS users, transactions, add_friend, users_transactions;
+--DROP TABLE IF EXISTS users, transactions, add_friend, users_transactions;
 
 CREATE TABLE users (
   email VARCHAR(100) PRIMARY KEY NOT NULL,
