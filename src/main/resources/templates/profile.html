@@ -50,16 +50,16 @@
 					</div>
 					<div class="add-money">
 						<form class="add-money-container" th:action="@{/addMoneyBalance}" method="post">
-							<p>Add money to balance :</p>
-							<input type="number" min="0" max="1000" step="0.01" th:value="${sold.sold}" id="sold" name="sold" />
-							<button type="submit" value="Add money">Add money (MAX : 20 000)</button>
+							<p>Transfer from my bank account to my balance :</p>
+							<input type="number" min="0" max="20000" step="0.01" th:value="${sold.sold}" id="sold" name="sold" />
+							<button type="submit" value="Add money">Transfer (MAX : 20 000)</button>
 						</form>
 					</div>
 					<div class="add-money">
 						<form class="add-money-container" th:action="@{/addMoneyBank}" method="post">
-							<p>Add money to bank account :</p>
-							<input type="number" min="0" max="1000" step="0.01" th:value="${sold.sold}" id="sold" name="sold" />
-							<button type="submit" value="Add money">Add money</button>
+							<p>Transfer from balance to bank account :</p>
+							<input type="number" min="0" max="20000" step="0.01" th:value="${sold.sold}" id="sold" name="sold" />
+							<button type="submit" value="Add money">Transfer</button>
 						</form>
 					</div>
 				</div>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Buddy.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PayMyBuddyApp</a> &gt; <a href="index.source.html" class="el_package">com.PayMyBuddy.model</a> &gt; <span class="el_source">Buddy.java</span></div><h1>Buddy.java</h1><pre class="source lang-java linenums">package com.PayMyBuddy.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = &quot;users&quot;)
+public class Buddy {
+    @Id
+    @Column(name = &quot;email&quot;)
+    private String email;
+
+    @Column(name = &quot;first_name&quot;)
+    private String firstName;
+
+    @Column(name = &quot;last_name&quot;)
+    private String lastName;
+
+    @Column(name = &quot;password&quot;)
+    private String password;
+
+    @Column(name = &quot;sold&quot;)
+    private double sold;
+
+    @Column(name = &quot;role&quot;)
+    private String role;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = &quot;add_friend&quot;, joinColumns = @JoinColumn(name = &quot;email&quot;), inverseJoinColumns = @JoinColumn(name = &quot;email_friend&quot;))
+<span class="fc" id="L40">    private List&lt;Buddy&gt; friends = new ArrayList&lt;Buddy&gt;();</span>
+
+    @ManyToMany(mappedBy = &quot;buddies&quot;, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+<span class="fc" id="L43">    private List&lt;Transaction&gt; transactions = new ArrayList&lt;Transaction&gt;();</span>
+
+    public void addFriend(Buddy buddy) {
+	try {
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">	    if (!(friends.contains(buddy))) {</span>
+<span class="fc" id="L48">		friends.add(buddy);</span>
+<span class="fc" id="L49">	    } else {</span>
+<span class="nc" id="L50">		throw new IllegalArgumentException(&quot;Cette personne est déjà dans votre liste d'ami&quot;);</span>
+	    }
+<span class="nc" id="L52">	} catch (IllegalArgumentException iae) {</span>
+
+	}
+<span class="fc" id="L55">    }</span>
+
+    public Buddy() {
+<span class="fc" id="L58">	super();</span>
+<span class="fc" id="L59">    }</span>
+
+    public String getEmail() {
+<span class="fc" id="L62">	return email;</span>
+    }
+
+    public void setEmail(String email) {
+<span class="fc" id="L66">	this.email = email;</span>
+<span class="fc" id="L67">    }</span>
+
+    public String getFirstName() {
+<span class="fc" id="L70">	return firstName;</span>
+    }
+
+    public void setFirstName(String firstName) {
+<span class="fc" id="L74">	this.firstName = firstName;</span>
+<span class="fc" id="L75">    }</span>
+
+    public String getLastName() {
+<span class="fc" id="L78">	return lastName;</span>
+    }
+
+    public void setLastName(String lastName) {
+<span class="fc" id="L82">	this.lastName = lastName;</span>
+<span class="fc" id="L83">    }</span>
+
+    public String getPassword() {
+<span class="fc" id="L86">	return password;</span>
+    }
+
+    public void setPassword(String password) {
+<span class="fc" id="L90">	this.password = password;</span>
+<span class="fc" id="L91">    }</span>
+
+    public double getSold() {
+<span class="fc" id="L94">	return sold;</span>
+    }
+
+    public void setSold(double sold) {
+<span class="fc" id="L98">	this.sold = sold;</span>
+<span class="fc" id="L99">    }</span>
+
+    public String getRole() {
+<span class="fc" id="L102">	return role;</span>
+    }
+
+    public void setRole(String role) {
+<span class="fc" id="L106">	this.role = role;</span>
+<span class="fc" id="L107">    }</span>
+
+    public List&lt;Buddy&gt; getFriends() {
+<span class="fc" id="L110">	return friends;</span>
+    }
+
+    public void setFriends(List&lt;Buddy&gt; friends) {
+<span class="nc" id="L114">	this.friends = friends;</span>
+<span class="nc" id="L115">    }</span>
+
+    public List&lt;Transaction&gt; getTransactions() {
+<span class="fc" id="L118">	return transactions;</span>
+    }
+
+    public void setTransactions(List&lt;Transaction&gt; transactions) {
+<span class="nc" id="L122">	this.transactions = transactions;</span>
+<span class="nc" id="L123">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

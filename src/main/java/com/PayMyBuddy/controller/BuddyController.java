@@ -22,7 +22,7 @@ public class BuddyController {
     /**
      * Display the home page with some object with ModelAndView
      * 
-     * @return home page with some objects added or login page with error
+     * @return home page with some objects added or login page
      */
     @GetMapping("/")
     public ModelAndView transfer() {
@@ -83,9 +83,9 @@ public class BuddyController {
 		&& !(currentBuddy.getFriends().contains(buddyToAdd))) {
 	    // Add user to add as a friend of connected user
 	    currentBuddy.addFriend(buddyToAdd);
-	    return "redirect:/";
+	    return "redirect:/?friendAdded";
 	} else {
-	    return "redirect:/?errorAdded";
+	    return "redirect:/?addFriendError";
 	}
     }
 

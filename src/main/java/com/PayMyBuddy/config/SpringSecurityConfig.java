@@ -13,7 +13,6 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-
 public class SpringSecurityConfig {
 
     @Autowired
@@ -26,14 +25,15 @@ public class SpringSecurityConfig {
 	    auth.requestMatchers("/").hasRole("USER");
 	    auth.requestMatchers("/addFriend").hasRole("USER");
 	    auth.requestMatchers("/pay").hasRole("USER");
-	    auth.requestMatchers("/?errorAdded").hasRole("USER");
+	    auth.requestMatchers("/?friendAdded").hasRole("USER");
+	    auth.requestMatchers("/?addFriendError").hasRole("USER");
+	    auth.requestMatchers("/?successfullTransaction").hasRole("USER");
 	    auth.requestMatchers("/?errorTransaction").hasRole("USER");
 	    auth.requestMatchers("/registration.html").permitAll();
 	    auth.requestMatchers("/registration.html?error**").permitAll();
 	    auth.requestMatchers("/profile.html").permitAll();
 	    auth.requestMatchers("/profile.html?errorAmount").permitAll();
 	    auth.requestMatchers("/register").permitAll();
-	    auth.requestMatchers("/login").permitAll();
 	    auth.requestMatchers("/login?successRegister").permitAll();
 	    auth.requestMatchers("/resources/**", "/css/**").permitAll().anyRequest().authenticated();
 	}).formLogin(form -> {
@@ -46,8 +46,6 @@ public class SpringSecurityConfig {
 	    remember.userDetailsService(this.customUserDetailsService);
 	    remember.key("okontestmercibeaucoup");
 	    remember.rememberMeParameter("remember-me");
-	}).csrf(csrf -> {
-	    csrf.disable();
 	}).logout(logout -> {
 	    logout.logoutUrl("/logout").permitAll();
 	    logout.logoutSuccessUrl("/login?logout").invalidateHttpSession(true).deleteCookies("JSESSIONID",

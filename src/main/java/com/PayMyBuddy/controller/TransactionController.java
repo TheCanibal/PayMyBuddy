@@ -35,22 +35,23 @@ public class TransactionController {
 	Buddy currentBuddy = buddyService.BuddyIsConnected();
 	// Friend to pay
 	Buddy buddyToPay = buddyService.getBuddyByEmail(buddy.getEmail());
-	// Amount to transfer with interest
+	// Amount to transfer with interest rounded with 2 digits after dot
 	double amountInterestRounded = Math.round(newTransaction.getAmount() * 1.005 * 100.0) / 100.0;
 	// Amount recieved by friend
 	double amount = newTransaction.getAmount();
 	// If friend to pay is not null and is in database and if sold is superior or
-	// equal to transaction amount
+	// equal to transaction amount and transaction has description and amount to
+	// transfer >= 1
 	if (currentBuddy != null && buddyToPay != null && buddyService.getBuddies().contains(buddyToPay)
 		&& currentBuddy.getSold() >= amount && newTransaction.getDescription() != null
 		&& newTransaction.getAmount() >= 1) {
 	    // set first name and last name to display in transactions
 	    newTransaction.setFirstName(buddyToPay.getFirstName());
 	    newTransaction.setLastName(buddyToPay.getLastName());
-	    // add transaction to database
-	    transactionService.addTransaction(newTransaction);
 	    // Set a negative amount because user lose money
 	    newTransaction.setAmount(-amountInterestRounded);
+	    // add transaction to database
+	    transactionService.addTransaction(newTransaction);
 	    // update user's sold
 	    currentBuddy.setSold(currentBuddy.getSold() - amountInterestRounded);
 	    // update user in database
@@ -73,7 +74,7 @@ public class TransactionController {
 	    newTransaction.addBuddies(currentBuddy);
 	    transactionReverse.addBuddies(buddyToPay);
 
-	    return "redirect:/";
+	    return "redirect:/?successfullTransaction";
 	} else {
 	    return "redirect:/?errorTransaction";
 	}
@@ -85,7 +86,9 @@ public class TransactionController {
 	Buddy currentBuddy = buddyService.BuddyIsConnected();
 	// if someone is authenticated, recover the connected user
 	double roundSold = Math.round(sold.getSold() * 100.0) / 100.0;
+	// if sold > 0 and <= 20 000 and user is connected
 	if (roundSold > 0 && roundSold <= 20000 && currentBuddy != null) {
+	    // Set new sold and update user's sold in DB else show error message
 	    currentBuddy.setSold(roundSold + currentBuddy.getSold());
 	    buddyService.updateBuddy(currentBuddy);
 	    return "redirect:/profile.html";
@@ -100,7 +103,10 @@ public class TransactionController {
 	Buddy currentBuddy = buddyService.BuddyIsConnected();
 	// Round sold to 2 decimals
 	double roundSold = Math.round(sold.getSold() * 100.0) / 100.0;
+	// if user is connected and sold to send is < to user's sold and sold to send >
+	// 0 and <= 20 000
 	if (currentBuddy != null && currentBuddy.getSold() - roundSold > 0 && roundSold > 0 && roundSold <= 20000) {
+	    // set new sold and update in DB else show error message
 	    currentBuddy.setSold(currentBuddy.getSold() - roundSold);
 	    buddyService.updateBuddy(currentBuddy);
 	    return "redirect:/profile.html";

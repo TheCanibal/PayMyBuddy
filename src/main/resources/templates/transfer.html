@@ -16,7 +16,7 @@
 						<span th:object="${sold}" th:text="${sold}"></span>
 					</li>
 					<li><a href="#">Home</a></li>
-					<li><a href="@{/}" class="active">Transfer</a></li>
+					<li><a th:href="@{/}" class="active">Transfer</a></li>
 					<li><a th:href="@{profile.html}">Profile</a></li>
 					<li><a href="#">Contact</a></li>
 					<form th:action="@{/logout}" method="post">
@@ -33,11 +33,17 @@
 			</div>
 
 			<div class="content-block">
-				<div th:if="${param.errorAdded}">
+				<div th:if="${param.addFriendError}">
 					<p class="text-danger">Already added or mail doesn't exist</p>
 				</div>
 				<div th:if="${param.errorTransaction}">
 					<p class="text-danger">Must select friend or put description and amount need to be >= 1</p>
+				</div>
+				<div th:if="${param.friendAdded}">
+					<p class="text-success">Friend added successfuly</p>
+				</div>
+				<div th:if="${param.successfullTransaction}">
+					<p class="text-success">Transaction completed</p>
 				</div>
 				<div class="text-container">
 					<p>Send Money</p>

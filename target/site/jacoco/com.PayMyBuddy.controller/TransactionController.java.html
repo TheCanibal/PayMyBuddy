@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TransactionController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PayMyBuddyApp</a> &gt; <a href="index.source.html" class="el_package">com.PayMyBuddy.controller</a> &gt; <span class="el_source">TransactionController.java</span></div><h1>TransactionController.java</h1><pre class="source lang-java linenums">package com.PayMyBuddy.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import com.PayMyBuddy.model.Buddy;
+import com.PayMyBuddy.model.Transaction;
+import com.PayMyBuddy.service.BuddyService;
+import com.PayMyBuddy.service.TransactionService;
+
+import jakarta.transaction.Transactional;
+
+@Controller
+<span class="fc" id="L16">public class TransactionController {</span>
+
+    @Autowired
+    private BuddyService buddyService;
+
+    @Autowired
+    private TransactionService transactionService;
+
+    /**
+     * Execute payment to a friend
+     * 
+     * @param buddy          friend to send money
+     * @param newTransaction create a new transaction to register it and display it
+     * @return redirection to home page or error page
+     */
+    @PostMapping(&quot;/pay&quot;)
+    @Transactional
+    public String pay(@ModelAttribute Buddy buddy, @ModelAttribute Transaction newTransaction) {
+	// Connected user to recover
+<span class="fc" id="L35">	Buddy currentBuddy = buddyService.BuddyIsConnected();</span>
+	// Friend to pay
+<span class="fc" id="L37">	Buddy buddyToPay = buddyService.getBuddyByEmail(buddy.getEmail());</span>
+	// Amount to transfer with interest
+<span class="fc" id="L39">	double amountInterestRounded = Math.round(newTransaction.getAmount() * 1.005 * 100.0) / 100.0;</span>
+	// Amount recieved by friend
+<span class="fc" id="L41">	double amount = newTransaction.getAmount();</span>
+	// If friend to pay is not null and is in database and if sold is superior or
+	// equal to transaction amount
+<span class="pc bpc" id="L44" title="1 of 6 branches missed.">	if (currentBuddy != null &amp;&amp; buddyToPay != null &amp;&amp; buddyService.getBuddies().contains(buddyToPay)</span>
+<span class="fc bfc" id="L45" title="All 4 branches covered.">		&amp;&amp; currentBuddy.getSold() &gt;= amount &amp;&amp; newTransaction.getDescription() != null</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">		&amp;&amp; newTransaction.getAmount() &gt;= 1) {</span>
+	    // set first name and last name to display in transactions
+<span class="fc" id="L48">	    newTransaction.setFirstName(buddyToPay.getFirstName());</span>
+<span class="fc" id="L49">	    newTransaction.setLastName(buddyToPay.getLastName());</span>
+	    // add transaction to database
+<span class="fc" id="L51">	    transactionService.addTransaction(newTransaction);</span>
+	    // Set a negative amount because user lose money
+<span class="fc" id="L53">	    newTransaction.setAmount(-amountInterestRounded);</span>
+	    // update user's sold
+<span class="fc" id="L55">	    currentBuddy.setSold(currentBuddy.getSold() - amountInterestRounded);</span>
+	    // update user in database
+<span class="fc" id="L57">	    buddyService.updateBuddy(currentBuddy);</span>
+	    // update friend's sold
+<span class="fc" id="L59">	    buddyToPay.setSold(buddyToPay.getSold() + amount);</span>
+	    // update friend in database
+<span class="fc" id="L61">	    buddyService.updateBuddy(buddyToPay);</span>
+	    // create a new transaction to allow friend that recieve money to see the
+	    // transaction information
+<span class="fc" id="L64">	    Transaction transactionReverse = new Transaction();</span>
+	    // Set the first name and last name of the user who send money
+<span class="fc" id="L66">	    transactionReverse.setFirstName(currentBuddy.getFirstName());</span>
+<span class="fc" id="L67">	    transactionReverse.setLastName(currentBuddy.getLastName());</span>
+	    // Set amount
+<span class="fc" id="L69">	    transactionReverse.setAmount(amount);</span>
+	    // Set description
+<span class="fc" id="L71">	    transactionReverse.setDescription(newTransaction.getDescription());</span>
+	    // add transactions to the association table
+<span class="fc" id="L73">	    newTransaction.addBuddies(currentBuddy);</span>
+<span class="fc" id="L74">	    transactionReverse.addBuddies(buddyToPay);</span>
+
+<span class="fc" id="L76">	    return &quot;redirect:/&quot;;</span>
+	} else {
+<span class="fc" id="L78">	    return &quot;redirect:/?errorTransaction&quot;;</span>
+	}
+    }
+
+    @PostMapping(&quot;/addMoneyBalance&quot;)
+    public String addMoneyBalance(@ModelAttribute Buddy sold) {
+	// Connected user to recover
+<span class="fc" id="L85">	Buddy currentBuddy = buddyService.BuddyIsConnected();</span>
+	// if someone is authenticated, recover the connected user
+<span class="fc" id="L87">	double roundSold = Math.round(sold.getSold() * 100.0) / 100.0;</span>
+<span class="pc bpc" id="L88" title="1 of 6 branches missed.">	if (roundSold &gt; 0 &amp;&amp; roundSold &lt;= 20000 &amp;&amp; currentBuddy != null) {</span>
+<span class="fc" id="L89">	    currentBuddy.setSold(roundSold + currentBuddy.getSold());</span>
+<span class="fc" id="L90">	    buddyService.updateBuddy(currentBuddy);</span>
+<span class="fc" id="L91">	    return &quot;redirect:/profile.html&quot;;</span>
+	} else {
+<span class="fc" id="L93">	    return &quot;redirect:/profile.html?errorAmount&quot;;</span>
+	}
+    }
+
+    @PostMapping(&quot;/addMoneyBank&quot;)
+    public String addMoneyBank(@ModelAttribute Buddy sold) {
+	// Connected user to recover
+<span class="fc" id="L100">	Buddy currentBuddy = buddyService.BuddyIsConnected();</span>
+	// Round sold to 2 decimals
+<span class="fc" id="L102">	double roundSold = Math.round(sold.getSold() * 100.0) / 100.0;</span>
+<span class="pc bpc" id="L103" title="2 of 8 branches missed.">	if (currentBuddy != null &amp;&amp; currentBuddy.getSold() - roundSold &gt; 0 &amp;&amp; roundSold &gt; 0 &amp;&amp; roundSold &lt;= 20000) {</span>
+<span class="fc" id="L104">	    currentBuddy.setSold(currentBuddy.getSold() - roundSold);</span>
+<span class="fc" id="L105">	    buddyService.updateBuddy(currentBuddy);</span>
+<span class="fc" id="L106">	    return &quot;redirect:/profile.html&quot;;</span>
+	} else {
+<span class="fc" id="L108">	    return &quot;redirect:/profile.html?errorAmount&quot;;</span>
+	}
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

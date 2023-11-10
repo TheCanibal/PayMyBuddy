@@ -1,0 +1,285 @@
+/* Réinitialisation des styles */
+body,
+h1,
+p,
+ul,
+li {
+	margin: 0;
+	padding: 0;
+	font-family: Arial, sans-serif;
+	font-weight: bold;
+}
+
+/* Style du header */
+header {
+	background: white;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px 20px;
+	border-radius: 20px;
+}
+
+/* Style du logo */
+.logo {
+	background: linear-gradient(to right, #226633, #66cc99);
+	color: white;
+	border-radius: 10px;
+	padding: 10px 20px;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+/* Style de la liste de liens */
+nav ul {
+	list-style: none;
+	display: flex;
+}
+
+nav ul li {
+	margin-right: 30px;
+}
+
+/* Style des liens */
+a {
+	text-decoration: none;
+	color: black;
+	font-weight: bold;
+	transition: color 0.3s;
+}
+
+/* Style du lien actif (Transfer) */
+nav a.active {
+	color: rgb(31, 74, 167);
+}
+
+/* Changement de couleur au survol */
+a:hover {
+	color: rgb(31, 74, 167);
+}
+
+.input-logoff {
+	border: none;
+	background: white;
+	font-family: Arial, sans-serif;
+	font-weight: bold;
+	font-size: 15.5px;
+	cursor: pointer;
+	transition: color 0.3s;
+	text-decoration: none;
+}
+
+.input-logoff:hover {
+	color: rgb(31, 74, 167);
+}
+
+.breadcrumb {
+	background: #f0f0f0; /* Fond gris très clair */
+	padding: 10px;
+}
+
+.blue-text {
+	color: rgb(31, 74, 167); /* Texte "Home /" en bleu */
+}
+
+.breadcrumb a {
+	font-weight: bold;
+	margin: 0 2em;
+}
+
+/* Nouveau bloc de contenu */
+.content-block {
+	background: white;
+	padding: 20px;
+	margin: 20px auto;
+	max-width: 50%;
+}
+
+.text-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+/* Style du texte "Send Money" */
+.text-container p {
+	font-size: 24px;
+	padding-top: 3%;
+}
+
+.modal {
+	visibility: hidden;
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(77, 77, 77, 0.7);
+	transition: all 0.4s;
+}
+
+.modal:target {
+	visibility: visible;
+	opacity: 1;
+}
+
+.modal-content {
+	border-radius: 4px;
+	position: relative;
+	width: 500px;
+	max-width: 90%;
+	background: white;
+	padding: 1.5em 2em;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	text-align: center;
+}
+
+.closeModal {
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 10px;
+	cursor: pointer;
+	color: grey;
+	text-decoration: none;
+}
+
+#addConnectionButtonModal {
+	background: #0074b1;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 5px;
+	margin-top: 10px;
+	cursor: pointer;
+}
+
+#email {
+	width: 100%;
+	padding: 10px;
+	margin-top: 10px;
+}
+
+.form-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	background: #f0f0f0;
+	margin-top: 10px;
+	padding: 5px;
+}
+
+/* Style du bouton "Add Connection" */
+.blue-button {
+	background: #0074b1;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 5px;
+	margin-top: 10px;
+	cursor: pointer;
+}
+
+/* Style des conteneurs d'entrée */
+.input-container {
+	margin: 40px 10px 40px 10px;
+}
+
+/* Style du menu déroulant */
+select {
+	padding: 10px;
+	border: 2px solid #ccc;
+	border-radius: 5px;
+	margin-bottom: 10px;
+}
+
+/* Style du champ input de type number */
+
+.input-style {
+	height: 17px;
+	padding: 10px;
+	margin-top: 10px;
+	border: 2px solid #ccc;
+	border-radius: 5px;
+}
+
+/* Style du bouton "Pay" */
+.green-button {
+	background: #4caf50;
+	height: 40px;
+	padding: 10px 20px;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	margin-top: 10px;
+}
+
+/* Styles CSS */
+.transactions-block {
+	background: white;
+	padding: 20px;
+	margin: 20px auto;
+	max-width: 50%;
+}
+
+.transactions-block h2 {
+	font-size: 24px;
+	margin-bottom: 10px;
+	font-weight: 100;
+}
+
+.table-container {
+	max-height: 300px; /* Hauteur maximale du tableau avant défilement */
+	overflow: auto;
+}
+
+.transaction-table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.transaction-table th {
+	background: #4caf50;
+	color: white;
+	border: 1px solid #ccc;
+	padding: 10px;
+	text-align: center;
+}
+
+.transaction-table td {
+	border: 1px solid #ccc;
+	padding: 10px;
+	text-align: center;
+}
+
+tr {
+	height: 50px;
+}
+
+table tbody tr:nth-child(odd) {
+	background: #f0f0f0;
+}
+
+.text-warning {
+	font-weight: bold;
+	color: green;
+}
+
+.text-success {
+	font-weight: bold;
+	color: green;
+	text-align: center;
+	font-size: 24px;
+}
+
+.text-danger {
+	font-weight: bold;
+	color: red;
+	text-align: center;
+	font-size: 24px;
+}

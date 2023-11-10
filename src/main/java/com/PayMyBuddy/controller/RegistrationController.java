@@ -44,23 +44,36 @@ public class RegistrationController {
     @PostMapping("/register")
     @Transactional
     public String register(@ModelAttribute Buddy newBuddy) {
+	// if buddy to register has a valid email
 	if (newBuddy.getEmail() != null) {
+	    // if email contains @ and user has filled first name, last name and password
+	    // field
 	    if (newBuddy.getEmail().contains("@") && newBuddy.getFirstName() != null && newBuddy.getLastName() != null
 		    && newBuddy.getPassword() != null) {
+		// set sold to zero
 		newBuddy.setSold(0);
+		// set role to user
 		newBuddy.setRole("USER");
+		// encode password before add to DB
 		newBuddy.setPassword(passwordEncoder.encode(newBuddy.getPassword()));
+		// add new user to database and return login page with successful register
+		// message
 		buddyService.addBuddy(newBuddy);
 		return "redirect:/login?successRegister";
+		// if email doesn't contain @, return error
 	    } else if (!(newBuddy.getEmail().contains("@"))) {
 		return "redirect:/registration.html?errorEmail";
+		// if first name field is empty return error message
 	    } else if (newBuddy.getFirstName() == null) {
 		return "redirect:/registration.html?errorFirstName";
+		// if last name field is empty return error message
 	    } else if (newBuddy.getLastName() == null) {
 		return "redirect:/registration.html?errorLastName";
+		// else return error message for password
 	    } else {
 		return "redirect:/registration.html?errorPassword";
 	    }
+	    // else return error message for email
 	} else {
 	    return "redirect:/registration.html?errorEmail";
 	}

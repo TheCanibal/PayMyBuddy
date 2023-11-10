@@ -270,6 +270,13 @@ table tbody tr:nth-child(odd) {
 	color: green;
 }
 
+.text-success {
+	font-weight: bold;
+	color: green;
+	text-align: center;
+	font-size: 24px;
+}
+
 .text-danger {
 	font-weight: bold;
 	color: red;
