@@ -26,12 +26,12 @@ public class Transaction {
     private double amount;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "email")
-    private Buddy buddy;
+    @JoinColumn(name = "email_sender")
+    private Buddy buddySender;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "email_friend")
-    private Buddy buddyFriend;
+    @JoinColumn(name = "email_reciever")
+    private Buddy buddyReciever;
 
     public Transaction() {
 	super();
@@ -61,20 +61,20 @@ public class Transaction {
 	this.amount = amount;
     }
 
-    public Buddy getBuddy() {
-	return buddy;
+    public Buddy getBuddySender() {
+	return buddySender;
     }
 
-    public void setBuddy(Buddy buddy) {
-	this.buddy = buddy;
+    public void setBuddySender(Buddy buddy) {
+	this.buddySender = buddy;
     }
 
-    public Buddy getBuddyFriend() {
-	return buddyFriend;
+    public Buddy getBuddyReciever() {
+	return buddyReciever;
     }
 
-    public void setBuddyFriend(Buddy buddyFriend) {
-	this.buddyFriend = buddyFriend;
+    public void setBuddyReciever(Buddy buddyReciever) {
+	this.buddyReciever = buddyReciever;
     }
 
 }

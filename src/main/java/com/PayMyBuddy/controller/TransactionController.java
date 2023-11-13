@@ -32,7 +32,7 @@ public class TransactionController {
 	// Friend to pay
 	Buddy buddyToPay = buddyService.getBuddyByEmail(buddy.getEmail());
 	// Amount to transfer with interest rounded with 2 digits after dot
-	double amountInterestRoundedToMinus = -(Math.round(newTransaction.getAmount() * 1.005 * 100.0) / 100.0);
+	double amountInterestRoundedToMinus = (Math.round(newTransaction.getAmount() * 1.005 * 100.0) / 100.0);
 	// Amount recieved by friend
 	double amount = newTransaction.getAmount();
 	// If friend to pay is not null and is in database and if sold is superior or
@@ -41,29 +41,17 @@ public class TransactionController {
 	if (currentBuddy != null && buddyToPay != null && buddyService.getBuddies().contains(buddyToPay)
 		&& currentBuddy.getSold() >= amount && newTransaction.getDescription() != null
 		&& newTransaction.getAmount() >= 1) {
-	    // Set a negative amount because user lose money
-	    newTransaction.setAmount(amountInterestRoundedToMinus);
 	    // update user's sold
-	    currentBuddy.setSold(currentBuddy.getSold() + amountInterestRoundedToMinus);
+	    currentBuddy.setSold(currentBuddy.getSold() - amountInterestRoundedToMinus);
 	    // update user in database
 	    buddyService.updateBuddy(currentBuddy);
 	    // update friend's sold
 	    buddyToPay.setSold(buddyToPay.getSold() + amount);
 	    // update friend in database
 	    buddyService.updateBuddy(buddyToPay);
-	    // create a new transaction to allow friend that recieve money to see the
-	    // transaction information
-	    Transaction transactionReverse = new Transaction();
-	    // Set amount
-	    transactionReverse.setAmount(amount);
-	    // Set description
-	    transactionReverse.setDescription(newTransaction.getDescription());
-	    // Set reciever email
-	    newTransaction.setBuddyFriend(buddyToPay);
-	    transactionReverse.setBuddyFriend(currentBuddy);
-	    // add transactions to the transaction's list
-	    currentBuddy.addTransaction(newTransaction);
-	    buddyToPay.addTransactionFriend(transactionReverse);
+	    // add transactions to the transaction's lists (Sender and Reciever
+	    currentBuddy.addTransactionSend(newTransaction);
+	    buddyToPay.addTransactionRecieve(newTransaction);
 
 	    return "redirect:/?successfullTransaction";
 	} else {
