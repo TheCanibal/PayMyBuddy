@@ -40,10 +40,10 @@ public class Buddy {
     @JoinTable(name = "add_friend", joinColumns = @JoinColumn(name = "email"), inverseJoinColumns = @JoinColumn(name = "email_friend"))
     private List<Buddy> friends = new ArrayList<Buddy>();
 
-    @OneToMany(mappedBy = "buddy", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "buddySender", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Transaction> transactionsSend = new ArrayList<>();
 
-    @OneToMany(mappedBy = "buddyFriend", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "buddyReciever", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Transaction> transactionsRecieve = new ArrayList<>();
 
     public void addFriend(Buddy buddy) {
@@ -58,14 +58,14 @@ public class Buddy {
 	}
     }
 
-    public void addTransaction(Transaction transaction) {
+    public void addTransactionSend(Transaction transaction) {
 	transactionsSend.add(transaction);
-	transaction.setBuddy(this);
+	transaction.setBuddySender(this);
     }
 
-    public void addTransactionFriend(Transaction transaction) {
+    public void addTransactionRecieve(Transaction transaction) {
 	transactionsRecieve.add(transaction);
-	transaction.setBuddy(this);
+	transaction.setBuddyReciever(this);
     }
 
     public Buddy() {
