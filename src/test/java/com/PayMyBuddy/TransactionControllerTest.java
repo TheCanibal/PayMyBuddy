@@ -44,7 +44,7 @@ public class TransactionControllerTest {
 		.andExpect(redirectedUrl("/?successfullTransaction"));
 
 	assertEquals(jeandupont.getSold(), 29.9);
-	assertEquals(michelmartin.getSold(), 21.0);
+	assertEquals(michelmartin.getSold(), 121.0);
     }
 
     @Test

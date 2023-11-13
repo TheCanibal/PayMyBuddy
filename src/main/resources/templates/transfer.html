@@ -101,7 +101,7 @@
 								<td th:if="${(transaction.buddyReciever.email != null) && (#authentication.principal.username == transaction.buddyReciever.email)}" th:text="${transaction.buddySender.firstName + ' ' + transaction.buddySender.lastName}"></td>
 								<td th:if="${(transaction.buddySender.email != null) && (#authentication.principal.username == transaction.buddySender.email)}" th:text="${transaction.description}"></td>
 								<td th:if="${(transaction.buddyReciever.email != null) && (#authentication.principal.username == transaction.buddyReciever.email)}" th:text="${transaction.description}"></td>
-								<td th:if="${(transaction.buddySender.email != null) && (#authentication.principal.username == transaction.buddySender.email)}" th:text="${'- '+ #numbers.formatDecimal(transaction.amount * 1.005, 2, 2, 'COMMA')}"></td>
+								<td th:if="${(transaction.buddySender.email != null) && (#authentication.principal.username == transaction.buddySender.email)}" th:text="${'- '+ #numbers.formatDecimal(transaction.amount * 1.005, 1, 2, 'COMMA')}"></td>
 								<td th:if="${(transaction.buddyReciever.email != null) && (#authentication.principal.username == transaction.buddyReciever.email)}" th:text="${'+ ' + transaction.amount}"></td>
 							</tr>
 						</tbody>
