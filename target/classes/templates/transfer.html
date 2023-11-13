@@ -96,7 +96,6 @@
 								<th>Amount</th>
 							</tr>
 						</thead>
-						<tbody>
 							<tr th:each="transaction: ${transactions}">
 								<td th:if="${(transaction.buddySender.email != null) && (#authentication.principal.username == transaction.buddySender.email)}" th:text="${transaction.buddyReciever.firstName + ' ' + transaction.buddyReciever.lastName}"></td>
 								<td th:if="${(transaction.buddyReciever.email != null) && (#authentication.principal.username == transaction.buddyReciever.email)}" th:text="${transaction.buddySender.firstName + ' ' + transaction.buddySender.lastName}"></td>

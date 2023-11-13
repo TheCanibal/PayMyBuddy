@@ -66,6 +66,7 @@ public class Buddy {
     public void addTransactionRecieve(Transaction transaction) {
 	transactionsRecieve.add(transaction);
 	transaction.setBuddyReciever(this);
+
     }
 
     public Buddy() {
