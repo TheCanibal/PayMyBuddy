@@ -12,6 +12,9 @@
 			<nav>
 				<ul>
 					<li>
+						<span th:text="${'Welcome, ' + #authentication.principal.firstName + ' ' + #authentication.principal.lastName}"></span>
+					</li>
+					<li>
 						Remaining balance :
 						<span th:object="${sold}" th:text="${sold}"></span>
 					</li>
@@ -89,11 +92,13 @@
 								<th>Amount</th>
 							</tr>
 						</thead>
-						<tbody>
 							<tr th:each="transaction: ${transactions}">
-								<td th:text="${transaction.buddyFriend.firstName + ' ' + transaction.buddyFriend.lastName}"></td>
-								<td th:text="${transaction.description}"></td>
-								<td th:text="${transaction.amount}"></td>
+								<td th:if="${#authentication.principal.username == transaction.buddySender.email}" th:text="${transaction.buddyReciever.firstName + ' ' + transaction.buddyReciever.lastName}"></td>
+								<td th:if="${#authentication.principal.username == transaction.buddyReciever.email}" th:text="${transaction.buddySender.firstName + ' ' + transaction.buddySender.lastName}"></td>
+								<td th:if="${#authentication.principal.username == transaction.buddySender.email}" th:text="${transaction.description}"></td>
+								<td th:if="${#authentication.principal.username == transaction.buddyReciever.email}" th:text="${transaction.description}"></td>
+								<td th:if="${#authentication.principal.username == transaction.buddySender.email}" th:text="${'- '+ #numbers.formatDecimal(transaction.amount * 1.005, 2, 2, 'COMMA')}"></td>
+								<td th:if="${#authentication.principal.username == transaction.buddyReciever.email}" th:text="${'+ ' + transaction.amount}"></td>
 							</tr>
 						</tbody>
 					</table>

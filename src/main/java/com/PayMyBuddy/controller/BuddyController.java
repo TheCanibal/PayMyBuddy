@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.PayMyBuddy.model.Buddy;
 import com.PayMyBuddy.model.Transaction;
 import com.PayMyBuddy.service.BuddyService;
+import com.PayMyBuddy.service.TransactionService;
 
 import jakarta.transaction.Transactional;
 
@@ -18,6 +19,9 @@ public class BuddyController {
 
     @Autowired
     private BuddyService buddyService;
+
+    @Autowired
+    private TransactionService transactionService;
 
     /**
      * Display the home page with some object with ModelAndView
@@ -34,7 +38,7 @@ public class BuddyController {
 	    mav.addObject("buddy", new Buddy());
 	    mav.addObject("friends", currentBuddy.getFriends());
 	    mav.addObject("newTransaction", new Transaction());
-	    mav.addObject("transactions", currentBuddy.getTransactionsSend());
+	    mav.addObject("transactions", transactionService.getAllTransactions());
 	    mav.addObject("sold", currentBuddy.getSold());
 	    return mav;
 	} else {
