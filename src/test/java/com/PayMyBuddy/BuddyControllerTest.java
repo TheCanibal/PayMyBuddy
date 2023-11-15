@@ -2,6 +2,7 @@ package com.PayMyBuddy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -16,6 +17,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.PayMyBuddy.model.Buddy;
+import com.PayMyBuddy.model.BuddyDetails;
 import com.PayMyBuddy.service.BuddyService;
 
 import jakarta.transaction.Transactional;
@@ -31,10 +33,13 @@ public class BuddyControllerTest {
     @Autowired
     private BuddyService buddyService;
 
+    private BuddyDetails buddyDetails;
+
     @Test
-    @WithMockUser(username = "jeandupont@mail.fr")
+    @WithMockUser(value = "jeandupont@mail.fr")
     public void shouldReturnHomePage() throws Exception {
-	mockMvc.perform(get("/")).andExpect(status().isOk()).andExpect(view().name("transfer"))
+	buddyDetails = new BuddyDetails(buddyService.getBuddyByEmail("jeandupont@mail.fr"));
+	mockMvc.perform(get("/").with(user(buddyDetails))).andExpect(status().isOk()).andExpect(view().name("transfer"))
 		.andExpect(model().attributeExists("buddy", "friends", "newTransaction", "transactions"))
 		.andExpect(model().attribute("sold", 50.0));
     }

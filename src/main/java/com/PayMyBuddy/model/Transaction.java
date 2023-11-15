@@ -65,8 +65,8 @@ public class Transaction {
 	return buddySender;
     }
 
-    public void setBuddySender(Buddy buddy) {
-	this.buddySender = buddy;
+    public void setBuddySender(Buddy buddySender) {
+	this.buddySender = buddySender;
     }
 
     public Buddy getBuddyReciever() {

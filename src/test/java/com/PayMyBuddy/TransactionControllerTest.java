@@ -37,14 +37,14 @@ public class TransactionControllerTest {
 	double jeandupontSold = jeandupont.getSold();
 	double michelmartinSold = michelmartin.getSold();
 	assertEquals(jeandupontSold, 50.0);
-	assertEquals(michelmartinSold, 1.0);
+	assertEquals(michelmartinSold, 101.0);
 
 	mockMvc.perform(post("/pay").param("email", "michelmartin@mail.fr").param("description", "Birthday")
 		.param("amount", "20.0").with(csrf())).andExpect(status().is3xxRedirection())
 		.andExpect(redirectedUrl("/?successfullTransaction"));
 
 	assertEquals(jeandupont.getSold(), 29.9);
-	assertEquals(michelmartin.getSold(), 21.0);
+	assertEquals(michelmartin.getSold(), 121.0);
     }
 
     @Test

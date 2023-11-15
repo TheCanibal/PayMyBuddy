@@ -42,7 +42,11 @@ public class TransactionController {
 		&& currentBuddy.getSold() >= amount && newTransaction.getDescription() != null
 		&& newTransaction.getAmount() >= 1) {
 	    // update user's sold
-	    currentBuddy.setSold(currentBuddy.getSold() - amountInterestRoundedToMinus);
+	    if ((currentBuddy.getSold() - amountInterestRoundedToMinus) >= 0) {
+		currentBuddy.setSold(currentBuddy.getSold() - amountInterestRoundedToMinus);
+	    } else {
+		return "redirect:/?errorNotEnoughMoney";
+	    }
 	    // update user in database
 	    buddyService.updateBuddy(currentBuddy);
 	    // update friend's sold

@@ -13,8 +13,8 @@ CREATE TABLE transactions (
   id_transaction INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
   description VARCHAR(250) NOT NULL,
   amount FLOAT NOT NULL,
-  email VARCHAR(100) NOT NULL REFERENCES users(email),
-  email_friend VARCHAR(100) NOT NULL REFERENCES users(email)
+  email_sender VARCHAR(100) NOT NULL REFERENCES users(email),
+  email_reciever VARCHAR(100) NOT NULL REFERENCES users(email)
 );
 
 CREATE TABLE add_friend (

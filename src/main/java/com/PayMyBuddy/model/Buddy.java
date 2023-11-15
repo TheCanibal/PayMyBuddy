@@ -17,7 +17,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "users")
 public class Buddy {
-
     @Id
     @Column(name = "email")
     private String email;
@@ -136,6 +135,14 @@ public class Buddy {
 
     public void setTransactionsSend(List<Transaction> transactionsSend) {
 	this.transactionsSend = transactionsSend;
+    }
+
+    public List<Transaction> getTransactionsRecieve() {
+	return transactionsRecieve;
+    }
+
+    public void setTransactionsRecieve(List<Transaction> transactionsRecieve) {
+	this.transactionsRecieve = transactionsRecieve;
     }
 
 }
