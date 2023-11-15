@@ -4,6 +4,7 @@ HELP.md
 mvnw
 .mvn
 **.cmd
+mvnw.cmd
 !**/src/main/**/target/
 !**/src/test/**/target/
 
@@ -34,3 +35,4 @@ build/
 
 ### VS Code ###
 .vscode/
+/pom.xml
