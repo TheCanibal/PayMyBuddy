@@ -1,10 +1,9 @@
 HELP.md
-target/generated-sources
-target/generated-test-sources
-target/maven-archiver
-target/maven-status
-target/surefire-reports
-!.mvn/wrapper/maven-wrapper.jar
+/target/
+.mvnw
+mvnw
+.mvn
+**.cmd
 !**/src/main/**/target/
 !**/src/test/**/target/
 
