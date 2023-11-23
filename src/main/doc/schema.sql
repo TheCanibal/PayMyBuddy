@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS buddy, transaction, friend;
+-- DROP TABLE IF EXISTS buddy, transaction, friend;
 
 CREATE TABLE buddy (
   id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,

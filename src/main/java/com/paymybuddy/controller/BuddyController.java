@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.paymybuddy.exception.AddFriendErrorException;
 import com.paymybuddy.model.Buddy;
 import com.paymybuddy.model.Transaction;
 import com.paymybuddy.service.BuddyService;
@@ -81,21 +82,13 @@ public class BuddyController {
      */
     @PostMapping("/addFriend")
     @Transactional
-    public String addFriend(@ModelAttribute Buddy buddy) {
-        // Connected user to recover
-        Buddy currentBuddy = buddyService.getCurrentBuddy();
-        // User to add as friend
-        Buddy buddyToAdd = buddyService.getBuddyByEmail(buddy.getEmail());
-        // if user to add exists and is in database and isn't already a friend of
-        // connected user
-        if (currentBuddy != null && buddyToAdd != null && buddyService.getBuddies().contains(buddyToAdd)
-                && !(currentBuddy.getFriends().contains(buddyToAdd))) {
-            // Add user to add as a friend of connected user
-            currentBuddy.addFriend(buddyToAdd);
-            return "redirect:/?friendAdded";
-        } else {
+    public String addFriend(@ModelAttribute Buddy buddy) throws Exception {
+        try {
+            buddyService.addFriend(buddy);
+        } catch (AddFriendErrorException afee) {
             return "redirect:/?addFriendError";
         }
+        return "redirect:/?friendAdded";
     }
 
 }

@@ -17,53 +17,53 @@ public class BuddyDetails implements UserDetails {
     private Buddy buddy;
 
     public BuddyDetails(Buddy buddy) {
-	this.buddy = buddy;
+        this.buddy = buddy;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-	List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-	authorities.add(new SimpleGrantedAuthority("ROLE_" + buddy.getRole()));
-	return authorities;
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + buddy.getRole()));
+        return authorities;
     }
 
     @Override
     public String getPassword() {
-	return buddy.getPassword();
+        return buddy.getPassword();
     }
 
     @Override
     public String getUsername() {
-	return buddy.getEmail();
+        return buddy.getEmail();
     }
 
     public String getFirstName() {
-	return this.buddy.getFirstName();
+        return this.buddy.getFirstName();
     }
 
     public String getLastName() {
-	return this.buddy.getLastName();
+        return this.buddy.getLastName();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-	return true;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-	return true;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-	return true;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
 
-	return true;
+        return true;
     }
 
 }
