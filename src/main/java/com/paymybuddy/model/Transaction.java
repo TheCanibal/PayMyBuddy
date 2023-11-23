@@ -1,4 +1,4 @@
-package com.PayMyBuddy.model;
+package com.paymybuddy.model;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -11,13 +11,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "transactions")
+@Table(name = "transaction")
 public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_transaction")
-    private long id;
+    private Integer id;
 
     @Column(name = "description")
     private String description;
@@ -25,56 +25,67 @@ public class Transaction {
     @Column(name = "amount")
     private double amount;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "email_sender")
-    private Buddy buddySender;
+    @Column(name = "fee")
+    private double fee;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "email_reciever")
-    private Buddy buddyReciever;
+    @JoinColumn(name = "email_sender", referencedColumnName = "email")
+    private Buddy buddySender = null;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "email_reciever", referencedColumnName = "email")
+    private Buddy buddyReciever = null;
 
     public Transaction() {
-	super();
+        super();
     }
 
-    public long getId() {
-	return id;
+    public Integer getId() {
+        return id;
     }
 
-    public void setId(long id) {
-	this.id = id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getDescription() {
-	return description;
+        return description;
     }
 
     public void setDescription(String description) {
-	this.description = description;
+        this.description = description;
     }
 
     public double getAmount() {
-	return amount;
+        return amount;
     }
 
     public void setAmount(double amount) {
-	this.amount = amount;
+        this.amount = amount;
+    }
+
+    public double getFee() {
+        return fee;
+    }
+
+    public void setFee(double fee) {
+        this.fee = fee;
     }
 
     public Buddy getBuddySender() {
-	return buddySender;
+        return buddySender;
     }
 
     public void setBuddySender(Buddy buddySender) {
-	this.buddySender = buddySender;
+        this.buddySender = buddySender;
     }
 
     public Buddy getBuddyReciever() {
-	return buddyReciever;
+        return buddyReciever;
     }
 
     public void setBuddyReciever(Buddy buddyReciever) {
-	this.buddyReciever = buddyReciever;
+        this.buddyReciever = buddyReciever;
     }
 
 }

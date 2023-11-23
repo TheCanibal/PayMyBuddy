@@ -94,15 +94,19 @@
 								<th>Connections</th>
 								<th>Description</th>
 								<th>Amount</th>
+								<th>Fee</th>
 							</tr>
 						</thead>
+						<tbody>
 							<tr th:each="transaction: ${transactions}">
 								<td th:if="${(transaction.buddySender.email != null) && (#authentication.principal.username == transaction.buddySender.email)}" th:text="${transaction.buddyReciever.firstName + ' ' + transaction.buddyReciever.lastName}"></td>
 								<td th:if="${(transaction.buddyReciever.email != null) && (#authentication.principal.username == transaction.buddyReciever.email)}" th:text="${transaction.buddySender.firstName + ' ' + transaction.buddySender.lastName}"></td>
 								<td th:if="${(transaction.buddySender.email != null) && (#authentication.principal.username == transaction.buddySender.email)}" th:text="${transaction.description}"></td>
 								<td th:if="${(transaction.buddyReciever.email != null) && (#authentication.principal.username == transaction.buddyReciever.email)}" th:text="${transaction.description}"></td>
-								<td th:if="${(transaction.buddySender.email != null) && (#authentication.principal.username == transaction.buddySender.email)}" th:text="${'- '+ #numbers.formatDecimal(transaction.amount * 1.005, 1, 2, 'COMMA')}"></td>
+								<td th:if="${(transaction.buddySender.email != null) && (#authentication.principal.username == transaction.buddySender.email)}" th:text="${'- ' + transaction.amount}"></td>
 								<td th:if="${(transaction.buddyReciever.email != null) && (#authentication.principal.username == transaction.buddyReciever.email)}" th:text="${'+ ' + transaction.amount}"></td>
+								<td th:if="${(transaction.buddySender.email != null) && (#authentication.principal.username == transaction.buddySender.email)}" th:text="${transaction.fee}"></td>
+								<td th:if="${(transaction.buddyReciever.email != null) && (#authentication.principal.username == transaction.buddyReciever.email)}">0</td>
 							</tr>
 						</tbody>
 					</table>

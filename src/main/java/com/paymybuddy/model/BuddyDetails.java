@@ -1,4 +1,4 @@
-package com.PayMyBuddy.model;
+package com.paymybuddy.model;
 
 import java.util.ArrayList;
 import java.util.Collection;

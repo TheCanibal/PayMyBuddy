@@ -1,9 +1,9 @@
-package com.PayMyBuddy.repository;
+package com.paymybuddy.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.PayMyBuddy.model.Transaction;
+import com.paymybuddy.model.Transaction;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {

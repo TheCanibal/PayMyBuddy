@@ -1,12 +1,12 @@
-package com.PayMyBuddy.service;
+package com.paymybuddy.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.PayMyBuddy.model.Transaction;
-import com.PayMyBuddy.repository.TransactionRepository;
+import com.paymybuddy.model.Transaction;
+import com.paymybuddy.repository.TransactionRepository;
 
 @Service
 public class TransactionService {
@@ -21,15 +21,5 @@ public class TransactionService {
      */
     public List<Transaction> getAllTransactions() {
 	return transactionRepository.findAll();
-    }
-
-    /**
-     * Add a new transaction to the database
-     * 
-     * @param transaction transaction to add in database
-     * @return the saved entity
-     */
-    public Transaction addTransaction(Transaction transaction) {
-	return transactionRepository.save(transaction);
     }
 }

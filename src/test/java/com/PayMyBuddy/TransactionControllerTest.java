@@ -13,8 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.PayMyBuddy.model.Buddy;
-import com.PayMyBuddy.service.BuddyService;
+import com.paymybuddy.model.Buddy;
+import com.paymybuddy.service.BuddyService;
 
 import jakarta.transaction.Transactional;
 

@@ -1,4 +1,4 @@
-package com.PayMyBuddy.config;
+package com.paymybuddy.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -6,9 +6,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.PayMyBuddy.model.Buddy;
-import com.PayMyBuddy.model.BuddyDetails;
-import com.PayMyBuddy.repository.BuddyRepository;
+import com.paymybuddy.model.Buddy;
+import com.paymybuddy.model.BuddyDetails;
+import com.paymybuddy.repository.BuddyRepository;
 
 @Service("userDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
@@ -18,8 +18,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-	Buddy buddy = buddyRepository.findByEmail(email);
-	return new BuddyDetails(buddy);
+        Buddy buddy = buddyRepository.findByEmail(email);
+        return new BuddyDetails(buddy);
     }
 
 }

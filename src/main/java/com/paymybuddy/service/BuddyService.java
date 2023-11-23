@@ -1,4 +1,4 @@
-package com.PayMyBuddy.service;
+package com.paymybuddy.service;
 
 import java.util.List;
 
@@ -9,13 +9,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.PayMyBuddy.model.Buddy;
-import com.PayMyBuddy.repository.BuddyRepository;
-
-import jakarta.transaction.Transactional;
+import com.paymybuddy.model.Buddy;
+import com.paymybuddy.repository.BuddyRepository;
 
 @Service
-@Transactional
 public class BuddyService {
 
     @Autowired
@@ -46,8 +43,8 @@ public class BuddyService {
      * @param buddy buddy to add to the database
      * @return the saved entity
      */
-    public Buddy addBuddy(Buddy buddy) {
-	return buddyRepository.save(buddy);
+    public void addBuddy(Buddy buddy) {
+	buddyRepository.save(buddy);
     }
 
     /**
@@ -56,8 +53,8 @@ public class BuddyService {
      * @param buddy buddy to update in the database
      * @return the updated entity
      */
-    public Buddy updateBuddy(Buddy buddy) {
-	return buddyRepository.save(buddy);
+    public void updateBuddy(Buddy buddy) {
+	buddyRepository.save(buddy);
     }
 
     /**
@@ -65,12 +62,12 @@ public class BuddyService {
      * 
      * @return connected user
      */
-    public Buddy BuddyIsConnected() {
+    public Buddy getCurrentBuddy() {
 	// Obtains the currently authenticated principal, or an authentication request
 	// token
 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	// Connected user to recover
-	Buddy currentBuddy = new Buddy();
+	Buddy currentBuddy;
 	// if someone is authenticated, recover the connected user else return null
 	if (auth != null) {
 	    SecurityContext ctx = SecurityContextHolder.getContext();

@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.PayMyBuddy.controller.BuddyController;
-import com.PayMyBuddy.controller.LoginController;
-import com.PayMyBuddy.controller.RegistrationController;
-import com.PayMyBuddy.controller.TransactionController;
+import com.paymybuddy.controller.BuddyController;
+import com.paymybuddy.controller.LoginController;
+import com.paymybuddy.controller.RegistrationController;
+import com.paymybuddy.controller.TransactionController;
 
 @SpringBootTest
 class PayMyBuddyAppApplicationTests {
