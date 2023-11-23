@@ -6,7 +6,7 @@ Script schema SQL : https://github.com/TheCanibal/PayMyBuddy/blob/main/src/main/
 
 Script data SQL : https://github.com/TheCanibal/PayMyBuddy/blob/main/src/main/doc/data.sql
 
-Modèle physique de données : https://github.com/TheCanibal/PayMyBuddy/blob/main/src/main/doc/MPD.png
+Modèle physique de données : https://github.com/TheCanibal/PayMyBuddy/blob/main/src/main/doc/MLD_MPD.png
 
 Modèle logique de données : https://github.com/TheCanibal/PayMyBuddy/blob/main/src/main/doc/MLD.png
 
