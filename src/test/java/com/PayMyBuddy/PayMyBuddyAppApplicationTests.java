@@ -28,10 +28,10 @@ class PayMyBuddyAppApplicationTests {
 
     @Test
     void contextLoads() {
-	assertThat(loginController).isNotNull();
-	assertThat(buddyController).isNotNull();
-	assertThat(transactionController).isNotNull();
-	assertThat(registrationController).isNotNull();
+        assertThat(loginController).isNotNull();
+        assertThat(buddyController).isNotNull();
+        assertThat(transactionController).isNotNull();
+        assertThat(registrationController).isNotNull();
     }
 
 }

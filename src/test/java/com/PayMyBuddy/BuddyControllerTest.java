@@ -38,88 +38,88 @@ public class BuddyControllerTest {
     @Test
     @WithMockUser(value = "jeandupont@mail.fr")
     public void shouldReturnHomePage() throws Exception {
-	buddyDetails = new BuddyDetails(buddyService.getBuddyByEmail("jeandupont@mail.fr"));
-	mockMvc.perform(get("/").with(user(buddyDetails))).andExpect(status().isOk()).andExpect(view().name("transfer"))
-		.andExpect(model().attributeExists("buddy", "friends", "newTransaction", "transactions"))
-		.andExpect(model().attribute("sold", 50.0));
+        buddyDetails = new BuddyDetails(buddyService.getBuddyByEmail("jeandupont@mail.fr"));
+        mockMvc.perform(get("/").with(user(buddyDetails))).andExpect(status().isOk()).andExpect(view().name("transfer"))
+                .andExpect(model().attributeExists("buddy", "friends", "newTransaction", "transactions"))
+                .andExpect(model().attribute("sold", 50.0));
     }
 
     @Test
     @WithMockUser
     public void shouldReturnLoginPageHomeView() throws Exception {
-	mockMvc.perform(get("/")).andExpect(status().isOk()).andExpect(view().name("login"));
+        mockMvc.perform(get("/")).andExpect(status().isOk()).andExpect(view().name("login"));
     }
 
     @Test
     @WithMockUser(username = "jeandupont@mail.fr")
     public void shouldReturnProfilePage() throws Exception {
-	mockMvc.perform(get("/profile.html")).andExpect(status().isOk()).andExpect(view().name("profile.html"));
+        mockMvc.perform(get("/profile.html")).andExpect(status().isOk()).andExpect(view().name("profile.html"));
     }
 
     @Test
     @WithMockUser
     public void shouldReturnLoginPageProfileView() throws Exception {
-	mockMvc.perform(get("/profile.html")).andExpect(status().isOk()).andExpect(view().name("login"));
+        mockMvc.perform(get("/profile.html")).andExpect(status().isOk()).andExpect(view().name("login"));
     }
 
     @Test
     @WithMockUser(username = "jeandupont@mail.fr")
     public void addFriendInFriendListTest() throws Exception {
-	Buddy jeandupont = buddyService.getBuddyByEmail("jeandupont@mail.fr");
-	int numberOfFriends = jeandupont.getFriends().size();
+        Buddy jeandupont = buddyService.getBuddyByEmail("jeandupont@mail.fr");
+        int numberOfFriends = jeandupont.getFriends().size();
 
-	mockMvc.perform(post("/addFriend").param("email", "gilbertlarousse@mail.fr").with(csrf()))
-		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/?friendAdded"));
+        mockMvc.perform(post("/addFriend").param("email", "gilbertlarousse@mail.fr").with(csrf()))
+                .andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/?friendAdded"));
 
-	assertEquals(jeandupont.getFriends().size(), numberOfFriends + 1);
+        assertEquals(numberOfFriends + 1, jeandupont.getFriends().size());
     }
 
     @Test
     @WithMockUser(username = "jeandupont@mail.fr")
     public void addFriendInFriendListWithUnknownUserTest() throws Exception {
 
-	mockMvc.perform(post("/addFriend").param("email", "unknownUser@mail.fr").with(csrf()))
-		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/?addFriendError"));
+        mockMvc.perform(post("/addFriend").param("email", "unknownUser@mail.fr").with(csrf()))
+                .andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/?addFriendError"));
     }
 
     @Test
     @WithMockUser(username = "jeandupont@mail.fr")
     public void addFriendWhoIsAlreadyFriendInFriendListTest() throws Exception {
 
-	mockMvc.perform(post("/addFriend").param("email", "michelmartin@mail.fr").with(csrf()))
-		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/?addFriendError"));
+        mockMvc.perform(post("/addFriend").param("email", "michelmartin@mail.fr").with(csrf()))
+                .andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/?addFriendError"));
     }
 
     @Test
     @WithMockUser(username = "jeandupont@mail.fr")
     public void addNullFriendInFriendListTest() throws Exception {
 
-	mockMvc.perform(post("/addFriend").with(csrf())).andExpect(status().is3xxRedirection())
-		.andExpect(view().name("redirect:/?addFriendError"));
+        mockMvc.perform(post("/addFriend").with(csrf())).andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/?addFriendError"));
     }
 
     @Test
     @WithMockUser
     public void addFriendInUnknownUserFriendListTest() throws Exception {
 
-	mockMvc.perform(post("/addFriend").param("email", "gilbertlarousse@mail.fr").with(csrf()))
-		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/?addFriendError"));
+        mockMvc.perform(post("/addFriend").param("email", "gilbertlarousse@mail.fr").with(csrf()))
+                .andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/?addFriendError"));
     }
 
     @Test
     @WithMockUser
     public void addNullFriendInUnknownUserFriendListTest() throws Exception {
 
-	mockMvc.perform(post("/addFriend").with(csrf())).andExpect(status().is3xxRedirection())
-		.andExpect(view().name("redirect:/?addFriendError"));
+        mockMvc.perform(post("/addFriend").with(csrf())).andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/?addFriendError"));
     }
 
     @Test
     @WithMockUser
     public void addUnknownFriendInUnknownUserFriendListTest() throws Exception {
 
-	mockMvc.perform(post("/addFriend").param("email", "unknownUser@mail.fr").with(csrf()))
-		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/?addFriendError"));
+        mockMvc.perform(post("/addFriend").param("email", "unknownUser@mail.fr").with(csrf()))
+                .andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/?addFriendError"));
     }
 
 }

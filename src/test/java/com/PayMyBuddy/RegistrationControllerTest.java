@@ -31,63 +31,63 @@ public class RegistrationControllerTest {
 
     @Test
     public void shouldReturnRegistrationPage() throws Exception {
-	mockMvc.perform(get("/registration.html")).andExpect(status().isOk())
-		.andExpect(view().name("registration.html")).andExpect(model().attributeExists("newBuddy"));
+        mockMvc.perform(get("/registration.html")).andExpect(status().isOk())
+                .andExpect(view().name("registration.html")).andExpect(model().attributeExists("newBuddy"));
     }
 
     @Test
     public void registerTest() throws Exception {
-	int numberOfUsersInDatabase = buddyService.getBuddies().size();
+        int numberOfUsersInDatabase = buddyService.getBuddies().size();
 
-	mockMvc.perform(post("/register").param("email", "test@mail.fr").param("firstName", "Test")
-		.param("lastName", "Test").param("password", "123456").with(csrf()))
-		.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/login?successRegister"));
+        mockMvc.perform(post("/register").param("email", "test@mail.fr").param("firstName", "Test")
+                .param("lastName", "Test").param("password", "123456").with(csrf()))
+                .andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/login?successRegister"));
 
-	assertEquals(buddyService.getBuddies().size(), numberOfUsersInDatabase + 1);
+        assertEquals(numberOfUsersInDatabase + 1, buddyService.getBuddies().size());
     }
 
     @Test
     public void registerWithoutEmailTest() throws Exception {
 
-	mockMvc.perform(post("/register").param("firstName", "Test").param("lastName", "Test")
-		.param("password", "123456").with(csrf())).andExpect(status().is3xxRedirection())
-		.andExpect(view().name("redirect:/registration.html?errorEmail"));
+        mockMvc.perform(post("/register").param("firstName", "Test").param("lastName", "Test")
+                .param("password", "123456").with(csrf())).andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/registration.html?errorEmail"));
 
     }
 
     @Test
     public void registerWithoutFirstNameTest() throws Exception {
 
-	mockMvc.perform(post("/register").param("email", "test@mail.fr").param("lastName", "Test")
-		.param("password", "123456").with(csrf())).andExpect(status().is3xxRedirection())
-		.andExpect(view().name("redirect:/registration.html?errorFirstName"));
+        mockMvc.perform(post("/register").param("email", "test@mail.fr").param("lastName", "Test")
+                .param("password", "123456").with(csrf())).andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/registration.html?errorFirstName"));
 
     }
 
     @Test
     public void registerWithoutLastNameTest() throws Exception {
 
-	mockMvc.perform(post("/register").param("email", "test@mail.fr").param("firstName", "Test")
-		.param("password", "123456").with(csrf())).andExpect(status().is3xxRedirection())
-		.andExpect(view().name("redirect:/registration.html?errorLastName"));
+        mockMvc.perform(post("/register").param("email", "test@mail.fr").param("firstName", "Test")
+                .param("password", "123456").with(csrf())).andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/registration.html?errorLastName"));
 
     }
 
     @Test
     public void registerWithoutPasswordTest() throws Exception {
 
-	mockMvc.perform(post("/register").param("email", "test@mail.fr").param("firstName", "Test")
-		.param("lastName", "Test").with(csrf())).andExpect(status().is3xxRedirection())
-		.andExpect(view().name("redirect:/registration.html?errorPassword"));
+        mockMvc.perform(post("/register").param("email", "test@mail.fr").param("firstName", "Test")
+                .param("lastName", "Test").with(csrf())).andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/registration.html?errorPassword"));
 
     }
 
     @Test
     public void registerWithWrongEmail() throws Exception {
-	mockMvc.perform(post("/register").param("email", "testmail.fr").param("firstName", "Test")
-		.param("lastName", "Test").param("password", "123456").with(csrf()))
-		.andExpect(status().is3xxRedirection())
-		.andExpect(view().name("redirect:/registration.html?errorEmail"));
+        mockMvc.perform(post("/register").param("email", "testmail.fr").param("firstName", "Test")
+                .param("lastName", "Test").param("password", "123456").with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/registration.html?errorEmail"));
 
     }
 
